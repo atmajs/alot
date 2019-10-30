@@ -1,0 +1,1 @@
+export const r_DONE = { done: true, value: null };

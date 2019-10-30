@@ -1,0 +1,19 @@
+# ide
+.komodotools
+*.komodoproject
+
+.gitignore
+.gitmodules
+.gitattributes
+.npmignore
+
+.travis.yml
+
+build.js
+node_modules/
+tools/
+test/
+src/
+builds/
+examples/
+ts-temp/
