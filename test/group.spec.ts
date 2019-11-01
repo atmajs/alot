@@ -1,5 +1,4 @@
 import { Alot } from '../src/alot';
-import sinon = require('sinon');
 
 UTest({
     'groupBy' () {
@@ -12,6 +11,8 @@ UTest({
         let groups = alot.groupBy(x => x.name).toArray();
         
         eq_(groups.length, 2)
+        eq_(groups[0].key, 'f');
+        eq_(groups[1].key, 'b');
 
 
         let hash = alot.groupBy(x => x.name).toDictionary(x => x.key, x => x.values);

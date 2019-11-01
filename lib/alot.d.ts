@@ -71,7 +71,7 @@ declare module 'alot/AlotProto' {
         takeWhile(fn: TakeWhileMethod<T>): TakeWhileStream<T>;
         skip(count: number): SkipStream<T>;
         skipWhile(fn: SkipWhileMethod<T>): SkipWhileStream<T>;
-        groupBy<TValue = any, TKey = string>(fn: GroupByKeyFn<T, TKey>): GroupByStream<T, TKey, TValue>;
+        groupBy<TKey = string>(fn: GroupByKeyFn<T, TKey>): GroupByStream<T, TKey>;
         distinctBy(fn: DistinctByKeyFn<T>): DistinctByStream<T, string>;
         forEach(fn: (x: T, index?: number) => void): void;
         toDictionary(keyFn: (x: T) => string | any, valFn?: (x: T) => any): {
@@ -219,12 +219,19 @@ declare module 'alot/streams/GroupStream' {
     export interface GroupByKeyFn<T, TKey = string> {
         (x: T, i?: number): TKey;
     }
-    export class GroupByStream<T, TKey, TValue> extends AlotProto<T> {
-        stream: IAlotStream<T>;
-        fn: GroupByKeyFn<T, TKey>;
-        constructor(stream: IAlotStream<T>, fn: GroupByKeyFn<T, TKey>);
-        next(): any;
+    interface IGroup<T, TKey = string> {
+        key: TKey;
+        values: T[];
     }
+    export class GroupByStream<TSource, TKey = string | number> extends AlotProto<IGroup<TSource, TKey>, TSource> {
+        stream: IAlotStream<TSource>;
+        fn: GroupByKeyFn<TSource, TKey>;
+        isAsync: boolean;
+        constructor(stream: IAlotStream<TSource>, fn: GroupByKeyFn<TSource, TKey>);
+        next(): any;
+        reset(): this;
+    }
+    export {};
 }
 
 declare module 'alot/streams/DistinctStream' {
