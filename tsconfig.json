@@ -3,12 +3,13 @@
     "exclude": ["node_modules"],
     "compilerOptions": {
         "outDir": "ts-temp",
-        "lib": ["es2015", "es2015.promise", "es2016"],
+        "lib": ["es2015", "es2015.promise", "es2016", "dom"],
         "typeRoots": [
             "node_modules/@types",
-            "typings/globals"
+            "typings/globals",
+            "typings-other"
         ],
-        "types": ["node", "assertion", "atma-utest"],
+        "types": ["node", "assertion", "atma-utest", "jquery"],
         "declaration": true,
         "target": "es5",
         "module": "commonjs",
