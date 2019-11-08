@@ -50,6 +50,9 @@ Methods:
 
 
 
+* `toArray(): T[]`
+* `toArrayAsync(): Promise<T[]>`
+* `toDictionary<TOut = T>(keyFn: (x: T) => string | number, valFn?: (x: T) => TOut ): { [key: string]: TOut }`
 
 
 ----
