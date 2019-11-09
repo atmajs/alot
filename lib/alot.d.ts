@@ -3,11 +3,13 @@
 declare module 'alot' {
     import './streams/exports';
     import { Alot as AlotInner } from 'alot/alot';
-    class Alot extends AlotInner {
-        static default: typeof AlotInner;
-        static Alot: typeof AlotInner;
+    import { AlotMeta } from 'alot/AlotMeta';
+    interface IAlotConstructor {
+        new <T>(array: T[], meta?: AlotMeta): AlotInner<T>;
+        <T>(array: T[], meta?: AlotMeta): AlotInner<T>;
     }
-    export = Alot;
+    const _default: IAlotConstructor;
+    export = _default;
 }
 
 declare module 'alot/alot' {
