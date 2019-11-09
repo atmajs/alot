@@ -12,21 +12,12 @@ interface IAlotConstructor {
 @Classify
 class Alot extends AlotInner{
 
-    static default = AlotInner
-    static Alot = AlotInner
+    static default = AlotInner as IAlotConstructor
+    static Alot = AlotInner as IAlotConstructor
 }
 
-// Reapply already decorated SQuery to default.
+// Reapply already decorated Alot to default.
 Alot.default = <IAlotConstructor> <any> Alot;
 Alot.Alot = <IAlotConstructor> <any> AlotInner;
 
 export = <IAlotConstructor> <any> Alot;
-
-// @Classify
-// export class Alot<T> extends AlotInner<T> {
-
-//     static default = Alot as any as IAlotConstructor;
-// }
-
-
-// export default Alot as any as IAlotConstructor;

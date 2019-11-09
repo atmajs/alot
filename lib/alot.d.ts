@@ -50,7 +50,7 @@ declare module 'alot/AlotMeta' {
 declare module 'alot/AlotProto' {
     import { MethodFilter } from 'alot/Methods';
     import { AlotMeta, AlotMetaAsync } from 'alot/AlotMeta';
-    import { IAlotStream, AlotStreamIterationResult, GroupByKeyFn, GroupByStream, DistinctByKeyFn, DistinctByStream, SkipStream, SkipWhileMethod, SkipWhileStream, TakeStream, TakeWhileStream, TakeWhileMethod, MapStream, MapManyStream, MethodMap, MethodMapMany, FilterStream, FilterStreamAsync } from 'alot/streams/exports';
+    import { IAlotStream, AlotStreamIterationResult, GroupByKeyFn, GroupByStream, DistinctByKeyFn, DistinctByStream, SkipStream, SkipWhileMethod, SkipWhileStream, TakeStream, TakeWhileStream, TakeWhileMethod, MapStream, MapManyStream, MethodMap, MethodMapMany, FilterStream, FilterStreamAsync, ForEachStream, ForEachMethod } from 'alot/streams/exports';
     export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         stream: IAlotStream<TSource>;
         isAsync: boolean;
@@ -64,13 +64,13 @@ declare module 'alot/AlotProto' {
         mapAsync<TResult>(fn: MethodMap<T, TResult>, meta?: AlotMeta): MapStream<T, TResult>;
         mapMany<TResult>(fn: MethodMapMany<T, TResult>): MapManyStream<T, TResult>;
         mapManyAsync<TResult>(fn: MethodMapMany<T, TResult>): MapManyStream<T, TResult>;
+        forEach(fn: ForEachMethod<T>): ForEachStream<T>;
         take(count: number): TakeStream<T>;
         takeWhile(fn: TakeWhileMethod<T>): TakeWhileStream<T>;
         skip(count: number): SkipStream<T>;
         skipWhile(fn: SkipWhileMethod<T>): SkipWhileStream<T>;
         groupBy<TKey = string>(fn: GroupByKeyFn<T, TKey>): GroupByStream<T, TKey>;
         distinctBy(fn: DistinctByKeyFn<T>): DistinctByStream<T, string>;
-        forEach(fn: (x: T, index?: number) => void): void;
         toDictionary(keyFn: (x: T) => string | any, valFn?: (x: T) => any): {
             [key: string]: T;
         };
@@ -111,6 +111,7 @@ declare module 'alot/streams/exports' {
     export { IAlotStream, AlotStreamIterationResult } from "alot/streams/IAlotStream";
     export { GroupByKeyFn, GroupByStream } from 'alot/streams/GroupStream';
     export { DistinctByKeyFn, DistinctByStream } from 'alot/streams/DistinctStream';
+    export { ForEachStream, ForEachMethod } from 'alot/streams/ForEachStream';
 }
 
 declare module 'alot/streams/FilterStream' {
@@ -241,6 +242,21 @@ declare module 'alot/streams/DistinctStream' {
         stream: IAlotStream<T>;
         fn: DistinctByKeyFn<T, TKey>;
         constructor(stream: IAlotStream<T>, fn: DistinctByKeyFn<T, TKey>);
+        next(): import("./IAlotStream").AlotStreamIterationResult<T>;
+        reset(): this;
+    }
+}
+
+declare module 'alot/streams/ForEachStream' {
+    import { IAlotStream } from "alot/streams/IAlotStream";
+    import { AlotProto } from "alot/AlotProto";
+    export interface ForEachMethod<T> {
+        (x: T, i?: number): void | any | never;
+    }
+    export class ForEachStream<T> extends AlotProto<T> {
+        stream: IAlotStream<T>;
+        fn: ForEachMethod<T>;
+        constructor(stream: IAlotStream<T>, fn: ForEachMethod<T>);
         next(): import("./IAlotStream").AlotStreamIterationResult<T>;
         reset(): this;
     }
