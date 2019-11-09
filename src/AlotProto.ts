@@ -19,7 +19,9 @@ import {
     MethodMap,
     MethodMapMany,
     FilterStream,
-    FilterStreamAsync
+    FilterStreamAsync,
+    ForEachStream,
+    ForEachMethod,
 } from './streams/exports';
 
 
@@ -56,6 +58,9 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     mapManyAsync<TResult>(fn: MethodMapMany<T, TResult>) {
         return new MapManyStream(this, fn, { async: true });
     }
+    forEach (fn: ForEachMethod<T>) {
+        return new ForEachStream(this, fn);
+    }
     take(count: number) {
         return new TakeStream(this, count);
     }
@@ -76,16 +81,6 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         return new DistinctByStream(this, fn);
     }
 
-
-    forEach(fn: (x: T, index?: number) => void) {
-        while (true) {
-            let x = this.next();
-            if (x.done) {
-                return;
-            }
-            fn(x.value, x.index);
-        }
-    }
     toDictionary(keyFn: (x: T) => string | any, valFn?: (x: T) => any): { [key: string]: T } {
         this.reset();
         let hash = Object.create(null);

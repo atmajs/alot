@@ -8,7 +8,7 @@
 
 **Lazy** and perfomance-optimized `Collection` methods
 
-* supports Async handlers
+* supports **async** handlers
 * typescript definitions
 
 
@@ -29,30 +29,104 @@ const numbers = Alot(arr)
 // Async
 const users = await Alot(arr)
     .mapAsync(async id => UserService.loadById(id))
-    .toArrayAsync();
+    .toArrayAsync({ threads: 4 });
 
 ```
 
 Methods: 
 
-* `map <T, TResult> (fn: (x: T, i?: number) => TResult)`
-* `mapAsync <T, TResult> (fn: (x: T, i?: number) => PromiseLike<TResult>)`
-* `filter <T> (fn: (x: T, i?: number) => boolean)`
-* `filterAsync <T> (fn: (x: T, i?: number) => PromiseLike<boolean>)`
-* `mapMany`
-* `mapManyAsync`
-* `take`
-* `takeWhile`
-* `skip`
-* `skipWhile`
-* `groupBy`
-* `distinctBy <T, TKey = string | number> (fn: (x: T, i?: number) => TKey)`
+### `map`, `mapAsync`
+
+```ts
+map <T, TResult> (fn: (x: T, i?: number) => TResult): IAlotStream<TResult>
+```
+
+```ts
+mapAsync <T, TResult> (fn: (x: T, i?: number) => PromiseLike<TResult>): IAlotStream<TResult>
+```
+
+### `mapMany`, 'mapManyAsync
+
+```ts
+map <T, TResult> (fn: (x: T, i?: number) => TResult[]): IAlotStream<TResult>
+```
+
+```ts
+mapAsync <T, TResult> (fn: (x: T, i?: number) => PromiseLike<TResult[]>): IAlotStream<TResult>
+```
 
 
+### `filter`, `filterAsync`
 
-* `toArray(): T[]`
-* `toArrayAsync(): Promise<T[]>`
-* `toDictionary<TOut = T>(keyFn: (x: T) => string | number, valFn?: (x: T) => TOut ): { [key: string]: TOut }`
+```ts
+filter <T> (fn: (x: T, i?: number) => boolean): IAlotStream<T>
+```
+
+```ts
+filterAsync <T> (fn: (x: T, i?: number) => PromiseLike<boolean>): IAlotStream<T>
+```
+
+
+### `forEach`
+```ts
+forEach <T> (fn: (x: T, i?: number) => void | any): IAlotStream<T>
+```
+
+### `take`, `takeWhile`
+
+```ts
+take <T> (count: number): IAlotStream<T>
+```
+
+```ts
+takeWhile <T> (fn: (x: T, i?: number) => boolean): IAlotStream<T>
+```
+
+### `skip`, `skipWhile`
+
+```ts
+skip <T> (count: number): IAlotStream<T>
+```
+
+```ts
+skipWhile <T> (fn: (x: T, i?: number) => boolean): IAlotStream<T>
+```
+
+
+### `groupBy`
+
+```ts
+groupBy <T, TKey = string > (fn: (x: T) => TKey): IAlotStream< { key: TKey[], values: T[] } >
+```
+
+### distinctBy
+
+```ts
+distinctBy <T, TKey = string> (fn: (x: T, i?: number) => TKey): IAlotStream<T>
+```
+
+
+## Output Streams
+
+### `toArray`
+
+```ts
+toArray(): T[]
+```
+
+### `toArrayAsync`
+
+```ts
+toArrayAsync(options: { threads: number } = { threads: 4 }): Promise<T[]>
+```
+
+
+### `toArrayDictionary`
+
+
+```ts
+toDictionary<TOut = T>(keyFn: (x: T) => string | number, valFn?: (x: T) => TOut ): { [key: string]: TOut }
+```
 
 
 ----
