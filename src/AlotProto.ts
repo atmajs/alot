@@ -81,7 +81,7 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         return new DistinctByStream(this, fn);
     }
 
-    toDictionary(keyFn: (x: T) => string | any, valFn?: (x: T) => any): { [key: string]: T } {
+    toDictionary <TKey = string, TValue = any> (keyFn: (x: T) => TKey, valFn?: (x: T) => TValue): { [key: string]: TValue } {
         this.reset();
         let hash = Object.create(null);
         while (true) {
