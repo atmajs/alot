@@ -122,10 +122,10 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         }
         return out;
     }
-    toArrayAsync(meta: AlotMetaAsync = { threads: 4 }): PromiseLike<T[]> {
+    toArrayAsync(meta: AlotMetaAsync = { threads: 4, errors: 'reject' }): PromiseLike<T[]> {
         this.reset();
 
-        let pool = new AsyncPool(this, meta.threads);
+        let pool = new AsyncPool(this, meta.threads, meta.errors);
         return pool.start();
     }
     first(): T {
