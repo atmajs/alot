@@ -44,17 +44,18 @@ declare module 'alot/AlotMeta' {
     }
     export interface AlotMetaAsync extends AlotMeta {
         threads?: number;
+        errors?: 'include' | 'ignore' | 'reject';
     }
 }
 
 declare module 'alot/AlotProto' {
     import { MethodFilter } from 'alot/Methods';
-    import { AlotMeta, AlotMetaAsync } from 'alot/AlotMeta';
+    import { AlotMeta, AlotMetaAsync, AlotStreamOpts } from 'alot/AlotMeta';
     import { IAlotStream, AlotStreamIterationResult, GroupByKeyFn, GroupByStream, DistinctByKeyFn, DistinctByStream, SkipStream, SkipWhileMethod, SkipWhileStream, TakeStream, TakeWhileStream, TakeWhileMethod, MapStream, MapManyStream, MethodMap, MethodMapMany, FilterStream, FilterStreamAsync, ForEachStream, ForEachMethod } from 'alot/streams/exports';
     export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         stream: IAlotStream<TSource>;
         isAsync: boolean;
-        constructor(stream: IAlotStream<TSource>);
+        constructor(stream: IAlotStream<TSource>, opts?: AlotStreamOpts);
         next(): AlotStreamIterationResult<T>;
         nextAsync(): Promise<AlotStreamIterationResult<T>>;
         reset(): this;
@@ -65,6 +66,7 @@ declare module 'alot/AlotProto' {
         mapMany<TResult>(fn: MethodMapMany<T, TResult>): MapManyStream<T, TResult>;
         mapManyAsync<TResult>(fn: MethodMapMany<T, TResult>): MapManyStream<T, TResult>;
         forEach(fn: ForEachMethod<T>): ForEachStream<T>;
+        forEachAsync<TResult>(fn: ForEachMethod<T>): ForEachStream<T>;
         take(count: number): TakeStream<T>;
         takeWhile(fn: TakeWhileMethod<T>): TakeWhileStream<T>;
         skip(count: number): SkipStream<T>;
@@ -148,10 +150,8 @@ declare module 'alot/streams/MapStream' {
         fn: MethodMap<TSource, TResult>;
         constructor(stream: IAlotStream<TSource>, fn: MethodMap<TSource, TResult>, opts?: AlotStreamOpts);
         next(): any;
-        nextAsync(): Promise<{
-            value: TResult;
-            done: boolean;
-        }>;
+        nextAsync(): Promise<any>;
+        reset(): this;
     }
     export interface MethodMapMany<T, TResult> {
         (x: T, i?: number): TResult[] | PromiseLike<TResult[]>;
@@ -250,14 +250,16 @@ declare module 'alot/streams/DistinctStream' {
 declare module 'alot/streams/ForEachStream' {
     import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
+    import { AlotStreamOpts } from 'alot/AlotMeta';
     export interface ForEachMethod<T> {
         (x: T, i?: number): void | any | never;
     }
     export class ForEachStream<T> extends AlotProto<T> {
         stream: IAlotStream<T>;
         fn: ForEachMethod<T>;
-        constructor(stream: IAlotStream<T>, fn: ForEachMethod<T>);
-        next(): import("./IAlotStream").AlotStreamIterationResult<T>;
+        constructor(stream: IAlotStream<T>, fn: ForEachMethod<T>, opts?: AlotStreamOpts);
+        next(): any;
+        nextAsync(): Promise<any>;
         reset(): this;
     }
 }
