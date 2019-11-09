@@ -1,5 +1,5 @@
 import { MethodFilter } from './Methods';
-import { AlotMeta, AlotMetaAsync } from './AlotMeta';
+import { AlotMeta, AlotMetaAsync, AlotStreamOpts } from './AlotMeta';
 import { AsyncPool } from './async/Pool';
 import {
     IAlotStream,
@@ -27,8 +27,8 @@ import {
 
 export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     isAsync = false;
-    constructor(public stream: IAlotStream<TSource>) {
-        this.isAsync = stream.isAsync;
+    constructor(public stream: IAlotStream<TSource>, opts?: AlotStreamOpts) {
+        this.isAsync = stream.isAsync || (opts?.async ?? false);
     }
     next(): AlotStreamIterationResult<T> {
         return this.stream.next() as unknown as AlotStreamIterationResult<T>;
@@ -60,6 +60,9 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     }
     forEach (fn: ForEachMethod<T>) {
         return new ForEachStream(this, fn);
+    }
+    forEachAsync<TResult>(fn: ForEachMethod<T>) {
+        return new ForEachStream(this, fn, { async: true });
     }
     take(count: number) {
         return new TakeStream(this, count);

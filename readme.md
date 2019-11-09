@@ -67,9 +67,12 @@ filterAsync <T> (fn: (x: T, i?: number) => PromiseLike<boolean>): IAlotStream<T>
 ```
 
 
-### `forEach`
+### `forEach`, `forEachAsync`
 ```ts
 forEach <T> (fn: (x: T, i?: number) => void | any): IAlotStream<T>
+```
+```ts
+forEachAsync <T> (fn: (x: T, i?: number) => void | any): IAlotStream<T>
 ```
 
 ### `take`, `takeWhile`

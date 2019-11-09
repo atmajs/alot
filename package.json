@@ -5,7 +5,7 @@
         "name": "Alexander Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.2.63",
+    "version": "0.2.64",
     "main": "./lib/alot.js",
     "types": "./lib/alot.d.ts",
     "repository": {
@@ -16,7 +16,7 @@
         "@types/sinon": "^2.3.3",
         "app-bundler": "0.0.75",
         "atma": "^0.11.7",
-        "atma-loader-ts": "^1.0.0",
+        "atma-loader-ts": "^1.1.11",
         "dts-bundle": "^0.7.3"
     },
     "scripts": {

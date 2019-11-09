@@ -10,11 +10,12 @@ export class AsyncPool <TModel, TResult> {
     promise: PromiseLike<TResult[]>;
 
     resolved = false
+    rejected = false
     done = false
 
     time = Date.now()
 
-    constructor (public stream: IAlotStream<TResult>, public threads: number = 2) {
+    constructor (public stream: IAlotStream<TResult>, public threads: number = 2, public errors: 'include' | 'ignore' | 'reject' = 'reject') {
         this.results = [];
         this.queue = [];
         this.promise = new class_Dfr;        
@@ -49,6 +50,19 @@ export class AsyncPool <TModel, TResult> {
         });
     }
     private continueFor(promise: Promise<AlotStreamIterationResult<TResult>>, index: number, error: Error, result: AlotStreamIterationResult<TResult>) {
+        if (this.rejected === true) {
+            return;
+        }
+        if (error != null) {
+            if (this.errors === 'reject') {
+                this.rejected = true;
+                (this.promise as any).reject(error);
+                return;
+            }
+            if (this.errors === 'include') {
+                result = <any> { value: error, index };
+            }
+        }
         if (result != null) {
             if (result.done === true) {
                 this.done = true;

@@ -71,8 +71,8 @@ declare module 'alot/AlotProto' {
         skipWhile(fn: SkipWhileMethod<T>): SkipWhileStream<T>;
         groupBy<TKey = string>(fn: GroupByKeyFn<T, TKey>): GroupByStream<T, TKey>;
         distinctBy(fn: DistinctByKeyFn<T>): DistinctByStream<T, string>;
-        toDictionary(keyFn: (x: T) => string | any, valFn?: (x: T) => any): {
-            [key: string]: T;
+        toDictionary<TKey = string, TValue = any>(keyFn: (x: T) => TKey, valFn?: (x: T) => TValue): {
+            [key: string]: TValue;
         };
         toDictionaryAsync(keyFn: (x: T) => string | Promise<string> | any, valFn?: (x: T) => Promise<any> | any): Promise<{
             [key: string]: T;

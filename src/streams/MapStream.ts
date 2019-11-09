@@ -7,12 +7,13 @@ export interface MethodMap<T, TResult> {
     (x: T, i?: number): TResult | PromiseLike<TResult>
 }
 export class MapStream<TSource, TResult> extends AlotProto<TResult, TSource> {
-    constructor(public stream: IAlotStream<TSource>, public fn: MethodMap<TSource, TResult>, private opts?: AlotStreamOpts) {
-        super(stream);
+    private _index = 0;
+    constructor(public stream: IAlotStream<TSource>, public fn: MethodMap<TSource, TResult>, opts?: AlotStreamOpts) {
+        super(stream, opts);
     }
     
     next() {
-        if (this.opts != null && this.opts.async) {
+        if (this.isAsync) {
             return this.nextAsync() as any;
         }
         let result = this.stream.next();
@@ -20,19 +21,25 @@ export class MapStream<TSource, TResult> extends AlotProto<TResult, TSource> {
             return { value: null, done: true };
         }
         return {
-            value: this.fn(result.value, result.index) as TResult,
+            value: this.fn(result.value, this._index++) as TResult,
             done: false
         };
     }
     async nextAsync() {
         let result = await this.stream.nextAsync();
         if (result.done) {
-            return { value: null, done: true };
+            //* skipped extra-object
+            result.value = null;
+            return result as any;
         }
         return {
-            value: await this.fn(result.value, result.index),
+            value: await this.fn(result.value, this._index++),
             done: false
         };
+    }
+    reset () {
+        this._index = 0;
+        return super.reset();
     }
 }
 
