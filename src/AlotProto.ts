@@ -22,8 +22,9 @@ import {
     FilterStreamAsync,
     ForEachStream,
     ForEachMethod,
+    ForkStreamInner,
+    ForkStreamOuter,
 } from './streams/exports';
-
 
 export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     isAsync = false;
@@ -82,6 +83,15 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     }
     distinctBy(fn: DistinctByKeyFn<T>) {
         return new DistinctByStream(this, fn);
+    }
+    distinct() {
+        return new DistinctByStream(this);
+    }
+
+    fork(fn: (stream: this) => void | any): this {
+        let inner = new ForkStreamInner(this, fn);
+        let outer = new ForkStreamOuter(this, inner);
+        return outer as any;
     }
 
     toDictionary <TKey = string, TValue = any> (keyFn: (x: T) => TKey, valFn?: (x: T) => TValue): { [key: string]: TValue } {

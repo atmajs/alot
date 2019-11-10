@@ -7,6 +7,8 @@ import { AlotMeta } from './AlotMeta';
 interface IAlotConstructor {
     new <T> (array: T[], meta?: AlotMeta): AlotInner<T>
     <T> (array: T[], meta?: AlotMeta): AlotInner<T>
+
+    fromObject: typeof AlotInner.fromObject
 }
 
 @Classify
@@ -18,6 +20,6 @@ class Alot extends AlotInner{
 
 // Reapply already decorated Alot to default.
 Alot.default = <IAlotConstructor> <any> Alot;
-Alot.Alot = <IAlotConstructor> <any> AlotInner;
+Alot.Alot = <IAlotConstructor> <any> Alot;
 
 export = <IAlotConstructor> <any> Alot;

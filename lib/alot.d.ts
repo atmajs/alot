@@ -7,17 +7,14 @@ declare module 'alot' {
     interface IAlotConstructor {
         new <T>(array: T[], meta?: AlotMeta): AlotInner<T>;
         <T>(array: T[], meta?: AlotMeta): AlotInner<T>;
+        fromObject: typeof AlotInner.fromObject;
     }
     const _default: IAlotConstructor;
     export = _default;
 }
 
 declare module 'alot/alot' {
-    import './streams/FilterStream';
-    import './streams/MapStream';
-    import './streams/SkipStream';
-    import './streams/TakeStream';
-    import './streams/GroupStream';
+    import './streams/exports';
     import { AlotMeta } from 'alot/AlotMeta';
     import { AlotProto } from 'alot/AlotProto';
     import { IAlotStream, AlotStreamIterationResult } from 'alot/streams/IAlotStream';
@@ -25,6 +22,10 @@ declare module 'alot/alot' {
         array: T[];
         meta?: AlotMeta;
         constructor(array: T[], meta?: AlotMeta);
+        static fromObject(obj: any): Alot<{
+            key: string;
+            value: any;
+        }>;
     }
     export class ArrayStream<T> implements IAlotStream<T> {
         array: T[];
@@ -73,6 +74,8 @@ declare module 'alot/AlotProto' {
         skipWhile(fn: SkipWhileMethod<T>): SkipWhileStream<T>;
         groupBy<TKey = string>(fn: GroupByKeyFn<T, TKey>): GroupByStream<T, TKey>;
         distinctBy(fn: DistinctByKeyFn<T>): DistinctByStream<T, string>;
+        distinct(): DistinctByStream<T, string | number>;
+        fork(fn: (stream: this) => void | any): this;
         toDictionary<TKey = string, TValue = any>(keyFn: (x: T) => TKey, valFn?: (x: T) => TValue): {
             [key: string]: TValue;
         };
@@ -106,14 +109,15 @@ declare module 'alot/Methods' {
 }
 
 declare module 'alot/streams/exports' {
+    export { IAlotStream, AlotStreamIterationResult } from 'alot/streams/IAlotStream';
     export { FilterStream, FilterStreamAsync } from 'alot/streams/FilterStream';
     export { MapStream, MapManyStream, MethodMap, MethodMapMany } from 'alot/streams/MapStream';
     export { TakeStream, TakeWhileStream, TakeWhileMethod } from 'alot/streams/TakeStream';
     export { SkipStream, SkipWhileMethod, SkipWhileStream } from 'alot/streams/SkipStream';
-    export { IAlotStream, AlotStreamIterationResult } from "alot/streams/IAlotStream";
     export { GroupByKeyFn, GroupByStream } from 'alot/streams/GroupStream';
     export { DistinctByKeyFn, DistinctByStream } from 'alot/streams/DistinctStream';
     export { ForEachStream, ForEachMethod } from 'alot/streams/ForEachStream';
+    export { ForkStreamInner, ForkStreamOuter } from 'alot/streams/ForkStream';
 }
 
 declare module 'alot/streams/FilterStream' {
@@ -241,7 +245,7 @@ declare module 'alot/streams/DistinctStream' {
     export class DistinctByStream<T, TKey = string | number> extends AlotProto<T> {
         stream: IAlotStream<T>;
         fn: DistinctByKeyFn<T, TKey>;
-        constructor(stream: IAlotStream<T>, fn: DistinctByKeyFn<T, TKey>);
+        constructor(stream: IAlotStream<T>, fn?: DistinctByKeyFn<T, TKey>);
         next(): import("./IAlotStream").AlotStreamIterationResult<T>;
         reset(): this;
     }
@@ -258,6 +262,36 @@ declare module 'alot/streams/ForEachStream' {
         stream: IAlotStream<T>;
         fn: ForEachMethod<T>;
         constructor(stream: IAlotStream<T>, fn: ForEachMethod<T>, opts?: AlotStreamOpts);
+        next(): any;
+        nextAsync(): Promise<any>;
+        reset(): this;
+    }
+}
+
+declare module 'alot/streams/ForkStream' {
+    import { IAlotStream } from 'alot/streams/IAlotStream';
+    import { AlotProto } from "alot/AlotProto";
+    export interface ForkMethod<T> {
+        (x: IAlotStream<T>): void | any;
+    }
+    export class ForkStreamInner<T> extends AlotProto<T> {
+        stream: IAlotStream<T>;
+        fn: ForkMethod<T>;
+        _cached: any[];
+        constructor(stream: IAlotStream<T>, fn: ForkMethod<T>);
+        next(): any;
+        nextAsync(): Promise<any>;
+        reset(): this;
+        pluck(): void;
+        has(i: number): boolean;
+        get(i: number): any;
+    }
+    export class ForkStreamOuter<T> extends AlotProto<T> {
+        stream: IAlotStream<T>;
+        inner: ForkStreamInner<T>;
+        _index: number;
+        _plucked: boolean;
+        constructor(stream: IAlotStream<T>, inner: ForkStreamInner<T>);
         next(): any;
         nextAsync(): Promise<any>;
         reset(): this;

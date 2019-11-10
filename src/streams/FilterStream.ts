@@ -4,6 +4,7 @@ import { MethodFilter } from '../Methods';
 import { Deco } from '../utils/deco';
 import { AlotMetaAsync } from '../AlotMeta';
 
+
 export class FilterStream<T> extends AlotProto<T> {
     constructor(public stream: IAlotStream<T>, public fn: MethodFilter<T>) {
         super(stream);
@@ -22,8 +23,6 @@ export class FilterStream<T> extends AlotProto<T> {
         }
     }
 }
-
-
 export class FilterStreamAsync<T> extends AlotProto<T> {
     isAsync = true;
     

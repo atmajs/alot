@@ -7,10 +7,10 @@ export interface DistinctByKeyFn<T, TKey = string> {
 }
 
 export class DistinctByStream<T, TKey = string | number> extends AlotProto<T> {
-    private _hash = Object.create(null);
+    private _track = new Track;
     private _index = -1;
 
-    constructor(public stream: IAlotStream<T>, public fn: DistinctByKeyFn<T, TKey>) {
+    constructor(public stream: IAlotStream<T>, public fn: DistinctByKeyFn<T, TKey> = null) {
         super(stream);
     }
     next() {
@@ -19,18 +19,42 @@ export class DistinctByStream<T, TKey = string | number> extends AlotProto<T> {
             if (result.done === true) {
                 return result;
             }
-            let key = String(this.fn(result.value, result.index));
-            if (this._hash[key] != null) {
+            let key = this.fn != null 
+                ? this.fn(result.value, result.index) 
+                : result.value;
+
+            if (this._track.isUnique(key) === false) {
                 continue;
             }
-            this._hash[key] = result.value;
             return result;
         }
     }
 
     reset () {
         this._index = -1;
-        this._hash = Object.create(null);
+        this._track = new Track;
         return super.reset();
+    }
+}
+
+class Track {
+    private _hash = Object.create(null);
+    private _map: Map<any, number>;
+    isUnique (mix) {
+        if (mix == null || typeof mix !== 'object') {
+            if (mix in this._hash) {
+                return false;
+            }
+            this._hash[mix] = 1;
+            return true;
+        }
+        if (this._map == null) {
+            this._map = new Map();
+        }
+        if (this._map.has(mix)) {
+            return false;
+        }
+        this._map.set(mix, 1);
+        return true;
     }
 }

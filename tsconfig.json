@@ -6,6 +6,7 @@
         "lib": ["es2015", "es2015.promise", "es2016", "dom"],
         "typeRoots": [
             "node_modules/@types",
+            "typings",
             "typings/globals",
             "typings-other"
         ],

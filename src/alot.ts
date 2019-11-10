@@ -1,8 +1,4 @@
-import './streams/FilterStream'
-import './streams/MapStream'
-import './streams/SkipStream'
-import './streams/TakeStream'
-import './streams/GroupStream'
+import './streams/exports'
 
 import { AlotMeta } from './AlotMeta';
 import { AlotProto } from './AlotProto';
@@ -12,6 +8,13 @@ import { IAlotStream, AlotStreamIterationResult } from './streams/IAlotStream';
 export class Alot<T = any> extends AlotProto<T> {
     constructor (public array: T[], public meta?: AlotMeta) {
         super(new ArrayStream(array));
+    }
+
+    static fromObject (obj: any): Alot<{key: string, value: any}> {
+        let arr = Object.keys(obj).map(key => {
+            return { key, value: obj[key] };
+        });
+        return new Alot(arr);
     }
 }
 
