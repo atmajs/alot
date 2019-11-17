@@ -1,4 +1,5 @@
 {
+    "files": ["src/export.ts"],
     "exclude": ["node_modules"],
     "compilerOptions": {
         "outDir": "ts-temp",

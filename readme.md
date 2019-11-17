@@ -102,12 +102,20 @@ skipWhile <T> (fn: (x: T, i?: number) => boolean): IAlotStream<T>
 groupBy <T, TKey = string > (fn: (x: T) => TKey): IAlotStream< { key: TKey[], values: T[] } >
 ```
 
-### distinctBy
+### `distinctBy`
 
 ```ts
 distinctBy <T, TKey = string> (fn: (x: T, i?: number) => TKey): IAlotStream<T>
 ```
 
+
+### `sortBy`
+
+```ts
+sortBy <T> (fn: (x: T, i?: number) => string | number, direction: 'asc' | 'desc' = 'asc'): IAlotStream<T>
+sortBy <T> (property: string, direction: 'asc' | 'desc' = 'asc'): IAlotStream<T>
+// also nested path are supported 'user.foo.username'
+```
 
 ## Output Streams
 
@@ -130,6 +138,7 @@ toArrayAsync(options: { threads: number } = { threads: 4 }): Promise<T[]>
 ```ts
 toDictionary<TOut = T>(keyFn: (x: T) => string | number, valFn?: (x: T) => TOut ): { [key: string]: TOut }
 ```
+
 
 
 ----

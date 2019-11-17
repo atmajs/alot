@@ -24,6 +24,8 @@ import {
     ForEachMethod,
     ForkStreamInner,
     ForkStreamOuter,
+    SortByStream,
+    SortMethod,
 } from './streams/exports';
 
 export class AlotProto<T, TSource = T> implements IAlotStream<T> {
@@ -86,6 +88,12 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     }
     distinct() {
         return new DistinctByStream(this);
+    }
+
+    sortBy(sortByFn: SortMethod<T>, direction?: 'asc' | 'desc' ): SortByStream<T>
+    sortBy(sortByKey: keyof T | string, direction?: 'asc' | 'desc' ): SortByStream<T>
+    sortBy(mix: SortMethod<T> | keyof T | string, direction: 'asc' | 'desc' = 'asc'): SortByStream<T> {
+        return new SortByStream(this, mix, direction);
     }
 
     fork(fn: (stream: this) => void | any): this {

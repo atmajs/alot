@@ -7,3 +7,4 @@ export { GroupByKeyFn, GroupByStream } from './GroupStream';
 export { DistinctByKeyFn, DistinctByStream } from './DistinctStream';
 export { ForEachStream, ForEachMethod } from './ForEachStream';
 export { ForkStreamInner, ForkStreamOuter } from './ForkStream';
+export { SortByStream, SortMethod } from './SortedStream';
