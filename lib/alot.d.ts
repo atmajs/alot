@@ -52,7 +52,7 @@ declare module 'alot/AlotMeta' {
 declare module 'alot/AlotProto' {
     import { MethodFilter } from 'alot/Methods';
     import { AlotMeta, AlotMetaAsync, AlotStreamOpts } from 'alot/AlotMeta';
-    import { IAlotStream, AlotStreamIterationResult, GroupByKeyFn, GroupByStream, DistinctByKeyFn, DistinctByStream, SkipStream, SkipWhileMethod, SkipWhileStream, TakeStream, TakeWhileStream, TakeWhileMethod, MapStream, MapManyStream, MethodMap, MethodMapMany, FilterStream, FilterStreamAsync, ForEachStream, ForEachMethod } from 'alot/streams/exports';
+    import { IAlotStream, AlotStreamIterationResult, GroupByKeyFn, GroupByStream, DistinctByKeyFn, DistinctByStream, SkipStream, SkipWhileMethod, SkipWhileStream, TakeStream, TakeWhileStream, TakeWhileMethod, MapStream, MapManyStream, MethodMap, MethodMapMany, FilterStream, FilterStreamAsync, ForEachStream, ForEachMethod, SortByStream, SortMethod } from 'alot/streams/exports';
     export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         stream: IAlotStream<TSource>;
         isAsync: boolean;
@@ -75,6 +75,8 @@ declare module 'alot/AlotProto' {
         groupBy<TKey = string>(fn: GroupByKeyFn<T, TKey>): GroupByStream<T, TKey>;
         distinctBy(fn: DistinctByKeyFn<T>): DistinctByStream<T, string>;
         distinct(): DistinctByStream<T, string | number>;
+        sortBy(sortByFn: SortMethod<T>, direction?: 'asc' | 'desc'): SortByStream<T>;
+        sortBy(sortByKey: keyof T | string, direction?: 'asc' | 'desc'): SortByStream<T>;
         fork(fn: (stream: this) => void | any): this;
         toDictionary<TKey = string, TValue = any>(keyFn: (x: T) => TKey, valFn?: (x: T) => TValue): {
             [key: string]: TValue;
@@ -118,6 +120,7 @@ declare module 'alot/streams/exports' {
     export { DistinctByKeyFn, DistinctByStream } from 'alot/streams/DistinctStream';
     export { ForEachStream, ForEachMethod } from 'alot/streams/ForEachStream';
     export { ForkStreamInner, ForkStreamOuter } from 'alot/streams/ForkStream';
+    export { SortByStream, SortMethod } from 'alot/streams/SortedStream';
 }
 
 declare module 'alot/streams/FilterStream' {
@@ -294,6 +297,22 @@ declare module 'alot/streams/ForkStream' {
         constructor(stream: IAlotStream<T>, inner: ForkStreamInner<T>);
         next(): any;
         nextAsync(): Promise<any>;
+        reset(): this;
+    }
+}
+
+declare module 'alot/streams/SortedStream' {
+    import { IAlotStream } from "alot/streams/IAlotStream";
+    import { AlotProto } from "alot/AlotProto";
+    export interface SortMethod<T> {
+        (x: T, i?: number): string | number;
+    }
+    export class SortByStream<T> extends AlotProto<T> {
+        stream: IAlotStream<T>;
+        direction: 'asc' | 'desc';
+        isAsync: boolean;
+        constructor(stream: IAlotStream<T>, mix: SortMethod<T> | keyof T | string, direction?: 'asc' | 'desc');
+        next(): any;
         reset(): this;
     }
 }
