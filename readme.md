@@ -117,7 +117,7 @@ sortBy <T> (property: string, direction: 'asc' | 'desc' = 'asc'): IAlotStream<T>
 // also nested path are supported 'user.foo.username'
 ```
 
-## Output Streams
+# Output Data
 
 ### `toArray`
 
@@ -134,9 +134,15 @@ toArrayAsync(options: { threads: number } = { threads: 4 }): Promise<T[]>
 
 ### `toArrayDictionary`
 
-
 ```ts
 toDictionary<TOut = T>(keyFn: (x: T) => string | number, valFn?: (x: T) => TOut ): { [key: string]: TOut }
+```
+
+### `first`, `find` (alias)
+
+```ts
+first(matcher?: (x: T, i?: number) => boolean): T
+find(matcher?: (x: T, i?: number) => boolean): T
 ```
 
 

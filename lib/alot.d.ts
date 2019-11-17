@@ -86,7 +86,8 @@ declare module 'alot/AlotProto' {
         }>;
         toArray(): T[];
         toArrayAsync(meta?: AlotMetaAsync): PromiseLike<T[]>;
-        first(): T;
+        first(matcher?: (x: T, i?: number) => boolean): T;
+        find(matcher?: (x: T, i?: number) => boolean): T;
     }
 }
 
