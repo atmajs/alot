@@ -61,7 +61,7 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     mapManyAsync<TResult>(fn: MethodMapMany<T, TResult>) {
         return new MapManyStream(this, fn, { async: true });
     }
-    forEach (fn: ForEachMethod<T>) {
+    forEach(fn: ForEachMethod<T>) {
         return new ForEachStream(this, fn);
     }
     forEachAsync<TResult>(fn: ForEachMethod<T>) {
@@ -90,8 +90,8 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         return new DistinctByStream(this);
     }
 
-    sortBy(sortByFn: SortMethod<T>, direction?: 'asc' | 'desc' ): SortByStream<T>
-    sortBy(sortByKey: keyof T | string, direction?: 'asc' | 'desc' ): SortByStream<T>
+    sortBy(sortByFn: SortMethod<T>, direction?: 'asc' | 'desc'): SortByStream<T>
+    sortBy(sortByKey: keyof T | string, direction?: 'asc' | 'desc'): SortByStream<T>
     sortBy(mix: SortMethod<T> | keyof T | string, direction: 'asc' | 'desc' = 'asc'): SortByStream<T> {
         return new SortByStream(this, mix, direction);
     }
@@ -102,7 +102,7 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         return outer as any;
     }
 
-    toDictionary <TKey = string, TValue = any> (keyFn: (x: T) => TKey, valFn?: (x: T) => TValue): { [key: string]: TValue } {
+    toDictionary<TKey = string, TValue = any>(keyFn: (x: T) => TKey, valFn?: (x: T) => TValue): { [key: string]: TValue } {
         this.reset();
         let hash = Object.create(null);
         while (true) {
@@ -146,7 +146,22 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         let pool = new AsyncPool(this, meta.threads, meta.errors);
         return pool.start();
     }
-    first(): T {
-        return this.reset().next().value;
+    first(matcher?: (x: T, i?: number) => boolean): T {
+        this.reset();
+
+        let i = 0;
+        while (true) {
+            let entry = this.next();
+            if (entry == null || entry.done === true) {
+                break;
+            }
+            if (matcher == null || matcher(entry.value, i++)) {
+                return entry.value;
+            }
+        }
+        return null;
+    }
+    find(matcher?: (x: T, i?: number) => boolean): T {
+        return this.first(matcher);
     }
 }
