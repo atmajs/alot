@@ -1,7 +1,7 @@
 <h1><font color='red'><code>a</code></font><code>lot</code></h1>
 ----
 
-[![Build Status](https://travis-ci.org/atmajs/Ruta.png?branch=master)](https://travis-ci.org/tenbits/alot)
+[![Build Status](https://travis-ci.org/atmajs/alot.png?branch=master)](https://travis-ci.org/tenbits/alot)
 [![NPM version](https://badge.fury.io/js/alot.svg)](http://badge.fury.io/js/alot)
 [![Bower version](https://badge.fury.io/bo/alot.svg)](http://badge.fury.io/bo/alot)
 
@@ -145,6 +145,14 @@ first(matcher?: (x: T, i?: number) => boolean): T
 find(matcher?: (x: T, i?: number) => boolean): T
 ```
 
+
+
+### `count`, `countAsync`
+
+```ts
+count      (fn: (x: T, i?: number) => number): number
+countAsync (fn: (x: T, i?: number) => number | Promise<number>): Promise<number>
+```
 
 
 ----

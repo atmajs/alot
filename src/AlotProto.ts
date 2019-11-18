@@ -164,4 +164,33 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     find(matcher?: (x: T, i?: number) => boolean): T {
         return this.first(matcher);
     }
+    count (fn: (x: T, i?: number) => number): number {
+        this.reset();
+        if (this.isAsync) {
+            return this.countAsync(fn) as any;
+        }
+        let count = 0;
+        let i = 0;
+        while (true) {
+            let entry = this.next();
+            if (entry == null || entry.done === true) {
+                break;
+            }
+            count += fn(entry.value, i++) ?? 0;
+        }
+        return count;
+    }
+    async countAsync (fn: (x: T, i?: number) => number | Promise<number>): Promise<number> {
+        this.reset();
+        let count = 0;
+        let i = 0;
+        while (true) {
+            let entry = await this.nextAsync();
+            if (entry == null || entry.done === true) {
+                break;
+            }
+            count += (await fn(entry.value, i++)) ?? 0;
+        }
+        return count;
+    }
 }

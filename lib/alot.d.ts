@@ -88,6 +88,8 @@ declare module 'alot/AlotProto' {
         toArrayAsync(meta?: AlotMetaAsync): PromiseLike<T[]>;
         first(matcher?: (x: T, i?: number) => boolean): T;
         find(matcher?: (x: T, i?: number) => boolean): T;
+        count(fn: (x: T, i?: number) => number): number;
+        countAsync(fn: (x: T, i?: number) => number | Promise<number>): Promise<number>;
     }
 }
 
@@ -180,8 +182,8 @@ declare module 'alot/streams/TakeStream' {
     import { AlotProto } from "alot/AlotProto";
     export class TakeStream<T> extends AlotProto<T> {
         stream: IAlotStream<T>;
-        count: number;
-        constructor(stream: IAlotStream<T>, count: number);
+        _count: number;
+        constructor(stream: IAlotStream<T>, _count: number);
         next(): import("./IAlotStream").AlotStreamIterationResult<T>;
         reset(): this;
     }
@@ -202,8 +204,8 @@ declare module 'alot/streams/SkipStream' {
     import { AlotProto } from "alot/AlotProto";
     export class SkipStream<T> extends AlotProto<T> {
         stream: IAlotStream<T>;
-        count: number;
-        constructor(stream: IAlotStream<T>, count: number);
+        _count: number;
+        constructor(stream: IAlotStream<T>, _count: number);
         next(): import("./IAlotStream").AlotStreamIterationResult<T>;
         reset(): this;
     }

@@ -3,11 +3,11 @@ import { AlotProto } from "../AlotProto";
 
 export class SkipStream<T> extends AlotProto<T> {
     private _skipped = 0;
-    constructor(public stream: IAlotStream<T>, public count: number) {
+    constructor(public stream: IAlotStream<T>, public _count: number) {
         super(stream);
     }
     next() {
-        while (++this._skipped <= this.count) {
+        while (++this._skipped <= this._count) {
             let skip = this.stream.next();
             if (skip.done) {
                 return skip;

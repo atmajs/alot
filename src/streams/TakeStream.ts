@@ -3,11 +3,11 @@ import { AlotProto } from "../AlotProto";
 
 export class TakeStream<T> extends AlotProto<T> {
     private _took = 0;
-    constructor(public stream: IAlotStream<T>, public count: number) {
+    constructor(public stream: IAlotStream<T>, public _count: number) {
         super(stream);
     }
     next() {
-        if (++this._took > this.count) {
+        if (++this._took > this._count) {
             return { value: null, done: true };
         }
         return this.stream.next();
