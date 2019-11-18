@@ -9,7 +9,7 @@
 **Lazy** and perfomance-optimized `Collection` methods
 
 * supports **async** handlers
-* typescript definitions
+* with **typescript** definitions
 
 
 
@@ -145,15 +145,25 @@ first(matcher?: (x: T, i?: number) => boolean): T
 find(matcher?: (x: T, i?: number) => boolean): T
 ```
 
+# Aggregation
 
-
-### `count`, `countAsync`
+### `sum`, `sumAsync`
 
 ```ts
-count      (fn: (x: T, i?: number) => number): number
-countAsync (fn: (x: T, i?: number) => number | Promise<number>): Promise<number>
+sum      (fn: (x: T, i?: number) => number): number
+sumAsync (fn: (x: T, i?: number) => number | Promise<number>): Promise<number>
 ```
 
+### `max`, `maxAsync`, `min`, `minAsync`
+
+```ts
+max <TOut> (getVal: (x: T, i?: number) => TOut): TOut
+maxAsync <TOut> (getVal: (x: T, i?: number) => TOut): Promise<TOut>
+
+min <TOut> (getVal: (x: T, i?: number) => TOut): TOut
+minAsync <TOut> (getVal: (x: T, i?: number) => TOut): Promise<TOut>
+
+```
 
 ----
 _Atma.js Project_

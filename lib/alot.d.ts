@@ -88,8 +88,12 @@ declare module 'alot/AlotProto' {
         toArrayAsync(meta?: AlotMetaAsync): PromiseLike<T[]>;
         first(matcher?: (x: T, i?: number) => boolean): T;
         find(matcher?: (x: T, i?: number) => boolean): T;
-        count(fn: (x: T, i?: number) => number): number;
-        countAsync(fn: (x: T, i?: number) => number | Promise<number>): Promise<number>;
+        sum(getVal: (x: T, i?: number) => number): number;
+        sumAsync(getVal: (x: T, i?: number) => number | Promise<number>): Promise<number>;
+        max<TOut>(fn: (x: T, i?: number) => TOut): TOut;
+        maxAsync<TOut>(fn: (x: T, i?: number) => TOut): Promise<TOut>;
+        min<TOut>(fn: (x: T, i?: number) => TOut): TOut;
+        minAsync<TOut>(fn: (x: T, i?: number) => TOut): Promise<TOut>;
     }
 }
 

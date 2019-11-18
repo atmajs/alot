@@ -1,6 +1,7 @@
 import { MethodFilter } from './Methods';
 import { AlotMeta, AlotMetaAsync, AlotStreamOpts } from './AlotMeta';
 import { AsyncPool } from './async/Pool';
+import { Aggregation } from './utils/Aggregation'
 import {
     IAlotStream,
     AlotStreamIterationResult,
@@ -164,33 +165,23 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     find(matcher?: (x: T, i?: number) => boolean): T {
         return this.first(matcher);
     }
-    count (fn: (x: T, i?: number) => number): number {
-        this.reset();
-        if (this.isAsync) {
-            return this.countAsync(fn) as any;
-        }
-        let count = 0;
-        let i = 0;
-        while (true) {
-            let entry = this.next();
-            if (entry == null || entry.done === true) {
-                break;
-            }
-            count += fn(entry.value, i++) ?? 0;
-        }
-        return count;
+
+    sum (getVal: (x: T, i?: number) => number): number {
+        return Aggregation.sum(this, getVal);
     }
-    async countAsync (fn: (x: T, i?: number) => number | Promise<number>): Promise<number> {
-        this.reset();
-        let count = 0;
-        let i = 0;
-        while (true) {
-            let entry = await this.nextAsync();
-            if (entry == null || entry.done === true) {
-                break;
-            }
-            count += (await fn(entry.value, i++)) ?? 0;
-        }
-        return count;
+    sumAsync (getVal: (x: T, i?: number) => number | Promise<number>): Promise<number> {
+        return Aggregation.sumAsync(this, getVal);
+    }
+    max <TOut> (fn: (x: T, i?: number) => TOut): TOut {
+        return Aggregation.getMinMaxBy(this, fn, 'max');
+    }
+    maxAsync <TOut> (fn: (x: T, i?: number) => TOut): Promise<TOut> {
+        return Aggregation.getMinMaxByAsync(this, fn, 'max');
+    }
+    min <TOut> (fn: (x: T, i?: number) => TOut): TOut {
+        return Aggregation.getMinMaxBy(this, fn, 'min');
+    }
+    minAsync <TOut> (fn: (x: T, i?: number) => TOut): Promise<TOut> {
+        return Aggregation.getMinMaxByAsync(this, fn, 'min');
     }
 }

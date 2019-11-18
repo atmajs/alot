@@ -9,7 +9,7 @@ UTest({
             { num: 4}, 
         ];
         let alot = new Alot(arr);
-        let sum = alot.count(x => x.num);
+        let sum = alot.sum(x => x.num);
         eq_(sum, 9);
     },
     async 'sumAsync' () {
@@ -19,7 +19,7 @@ UTest({
             { num: 4}, 
         ];
         let alot = new Alot(arr);
-        let sum = await alot.mapAsync(async x => x.num * 2).countAsync(x => x);
+        let sum = await alot.mapAsync(async x => x.num * 2).sumAsync(x => x);
         eq_(sum, 18);
     }
 })
