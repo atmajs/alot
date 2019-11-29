@@ -37,9 +37,8 @@ export class ForkStreamInner<T> extends AlotProto<T> {
         this._cached = [];
         return super.reset();
     }
-
     pluck () {
-        this.fn(this);
+        return this.fn(this);
     }
     has (i: number) {
         return i < this._cached.length;
@@ -73,6 +72,10 @@ export class ForkStreamOuter<T> extends AlotProto<T> {
         return this.stream.next();
     }
     async nextAsync () {
+        if (this._plucked === false) {
+            this._plucked = true;
+            await this.inner.pluck();
+        }
         if (this.inner.has(this._index)) {
             let result = this.inner.get(this._index);
             if (result.done !== true) {

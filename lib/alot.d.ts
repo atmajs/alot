@@ -292,7 +292,7 @@ declare module 'alot/streams/ForkStream' {
         next(): any;
         nextAsync(): Promise<any>;
         reset(): this;
-        pluck(): void;
+        pluck(): any;
         has(i: number): boolean;
         get(i: number): any;
     }
