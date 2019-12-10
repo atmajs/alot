@@ -28,6 +28,7 @@ import {
     SortByStream,
     SortMethod,
 } from './streams/exports';
+import { JoinStream } from './streams/JoinStream';
 
 export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     isAsync = false;
@@ -84,6 +85,25 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     groupBy<TKey = string>(fn: GroupByKeyFn<T, TKey>) {
         return new GroupByStream<T, TKey>(this, fn);
     }
+    /** Join Left Inner  */ 
+    join <TInner = T, TResult = T> (
+        inner: TInner[], 
+        getKey: (x: T) => string | number, 
+        getForeignKey: (x: TInner) => string | number,
+        joinFn: (a: T, b: TInner) => TResult, 
+        ) {
+        return new JoinStream(this, inner, getKey, getForeignKey, joinFn, 'inner');
+    }
+    /** Join Full Outer  */ 
+    joinOuter <TInner = T, TResult = T> (
+        inner: TInner[], 
+        getKey: (x: T) => string | number, 
+        getForeignKey: (x: TInner) => string | number,
+        joinFn: (a?: T, b?: TInner) => TResult, 
+        ) {
+        return new JoinStream(this, inner, getKey, getForeignKey, joinFn, 'outer');
+    }
+
     distinctBy(fn: DistinctByKeyFn<T>) {
         return new DistinctByStream(this, fn);
     }

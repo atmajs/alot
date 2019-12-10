@@ -102,6 +102,29 @@ skipWhile <T> (fn: (x: T, i?: number) => boolean): IAlotStream<T>
 groupBy <T, TKey = string > (fn: (x: T) => TKey): IAlotStream< { key: TKey[], values: T[] } >
 ```
 
+
+
+### `join` , `joinOuter`
+
+```ts
+// Inner Left Join
+join <TInner, TResult> (
+    inner: TInner[], 
+    getKey: (x: T) => string | number, 
+    getForeignKey: (x: TInner) => string | number,
+    joinFn: (a: T, b: TInner) => TResult
+): IAlotStream< TResult >
+
+// Outer Full Join
+joinOuter <TInner, TResult> (
+    inner: TInner[], 
+    getKey: (x: T) => string | number, 
+    getForeignKey: (x: TInner) => string | number,
+    joinFn: (a: T, b: TInner) => TResult
+): IAlotStream< TResult >
+
+```
+
 ### `distinctBy`
 
 ```ts
