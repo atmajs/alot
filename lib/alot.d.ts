@@ -53,6 +53,7 @@ declare module 'alot/AlotProto' {
     import { MethodFilter } from 'alot/Methods';
     import { AlotMeta, AlotMetaAsync, AlotStreamOpts } from 'alot/AlotMeta';
     import { IAlotStream, AlotStreamIterationResult, GroupByKeyFn, GroupByStream, DistinctByKeyFn, DistinctByStream, SkipStream, SkipWhileMethod, SkipWhileStream, TakeStream, TakeWhileStream, TakeWhileMethod, MapStream, MapManyStream, MethodMap, MethodMapMany, FilterStream, FilterStreamAsync, ForEachStream, ForEachMethod, SortByStream, SortMethod } from 'alot/streams/exports';
+    import { JoinStream } from 'alot/streams/JoinStream';
     export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         stream: IAlotStream<TSource>;
         isAsync: boolean;
@@ -73,6 +74,10 @@ declare module 'alot/AlotProto' {
         skip(count: number): SkipStream<T>;
         skipWhile(fn: SkipWhileMethod<T>): SkipWhileStream<T>;
         groupBy<TKey = string>(fn: GroupByKeyFn<T, TKey>): GroupByStream<T, TKey>;
+        /** Join Left Inner  */
+        join<TInner = T, TResult = T>(inner: TInner[], getKey: (x: T) => string | number, getForeignKey: (x: TInner) => string | number, joinFn: (a: T, b: TInner) => TResult): JoinStream<T, TInner, TResult>;
+        /** Join Full Outer  */
+        joinOuter<TInner = T, TResult = T>(inner: TInner[], getKey: (x: T) => string | number, getForeignKey: (x: TInner) => string | number, joinFn: (a?: T, b?: TInner) => TResult): JoinStream<T, TInner, TResult>;
         distinctBy(fn: DistinctByKeyFn<T>): DistinctByStream<T, string>;
         distinct(): DistinctByStream<T, string | number>;
         sortBy(sortByFn: SortMethod<T>, direction?: 'asc' | 'desc'): SortByStream<T>;
@@ -128,6 +133,38 @@ declare module 'alot/streams/exports' {
     export { ForEachStream, ForEachMethod } from 'alot/streams/ForEachStream';
     export { ForkStreamInner, ForkStreamOuter } from 'alot/streams/ForkStream';
     export { SortByStream, SortMethod } from 'alot/streams/SortedStream';
+}
+
+declare module 'alot/streams/JoinStream' {
+    import { IAlotStream } from "alot/streams/IAlotStream";
+    import { AlotProto } from "alot/AlotProto";
+    import { AlotStreamOpts } from 'alot/AlotMeta';
+    export interface MethodJoin<TOuter, TInner = TOuter, TResult = TOuter> {
+        (inner: TInner[], getOuterKey: (x: TOuter) => string | number, getInnerKey: (x: TInner) => string | number, joinFn: (a: TOuter, b: TInner) => TResult): TResult | PromiseLike<TResult>;
+    }
+    export interface MethodJoin<TOuter, TInner = TOuter, TResult = TOuter> {
+        (inner: TInner[], getOuterKey: (x: TOuter) => string | number, getInnerKey: (x: TInner) => string | number, joinFn: (a?: TOuter, b?: TInner) => TResult): TResult | PromiseLike<TResult>;
+    }
+    export type JoinType = 'inner' | 'outer';
+    export class JoinStream<TOuter, TInner = TOuter, TResult = TOuter> extends AlotProto<TResult, TOuter> {
+        stream: IAlotStream<TOuter>;
+        constructor(stream: IAlotStream<TOuter>, inner: TInner[], fnKeyOuter: (x: TOuter) => string | number, fnKeyInner: (x: TInner) => string | number, joinFn: (a?: TOuter, b?: TInner) => TResult, joinType: JoinType, opts?: AlotStreamOpts);
+        next(): any;
+        nextAsync(): Promise<any>;
+        reset(): this;
+    }
+    export interface MethodMapMany<T, TResult> {
+        (x: T, i?: number): TResult[] | PromiseLike<TResult[]>;
+    }
+    export class MapManyStream<T, TResult> extends AlotProto<TResult, T> {
+        stream: IAlotStream<T>;
+        fn: MethodMapMany<T, TResult>;
+        opts?: AlotStreamOpts;
+        constructor(stream: IAlotStream<T>, fn: MethodMapMany<T, TResult>, opts?: AlotStreamOpts);
+        next(): any;
+        nextAsync(): any;
+        reset(): this;
+    }
 }
 
 declare module 'alot/streams/FilterStream' {
