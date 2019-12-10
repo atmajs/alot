@@ -27,8 +27,8 @@ import {
     ForkStreamOuter,
     SortByStream,
     SortMethod,
+    JoinStream
 } from './streams/exports';
-import { JoinStream } from './streams/JoinStream';
 
 export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     isAsync = false;
