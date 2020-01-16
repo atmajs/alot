@@ -101,12 +101,14 @@ export class MapManyStream<T, TResult> extends AlotProto<TResult, T> {
             let result = await this.stream.next();
             if (result.done) {
                 this._done = true;
+                this._mapDfr =  null;
                 resolve();
+                return;
             }
             this._many = await this.fn(result.value, result.index);
             this._index = -1;
             this._mapDfr = null;
-            resolve()
+            resolve();
         });
     }
 }
