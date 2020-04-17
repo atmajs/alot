@@ -7,10 +7,11 @@ declare module 'alot' {
     interface IAlotConstructor {
         new <T>(array: T[], meta?: AlotMeta): AlotInner<T>;
         <T>(array: T[], meta?: AlotMeta): AlotInner<T>;
+        default: IAlotConstructor;
         fromObject: typeof AlotInner.fromObject;
     }
-    const _default: IAlotConstructor;
-    export = _default;
+    const alot: IAlotConstructor;
+    export = alot;
 }
 
 declare module 'alot/alot' {
