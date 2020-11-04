@@ -2,8 +2,14 @@ import { class_Dfr, class_EventEmitter } from "atma-utils";
 import { IAlotStream, AlotStreamIterationResult } from '../streams/IAlotStream';
 
 
+const $$setImmediate = typeof setImmediate === 'undefined'
+    ? function (fn) {
+        new Promise(() => fn());
+    }
+    : setImmediate;
+
 export class AsyncPool <TModel, TResult> {
-    
+
     results: (TResult | Error)[]
     queue: Promise<AlotStreamIterationResult<TResult>>[]
     index: number = -1;
@@ -18,11 +24,11 @@ export class AsyncPool <TModel, TResult> {
     constructor (public stream: IAlotStream<TResult>, public threads: number = 2, public errors: 'include' | 'ignore' | 'reject' = 'reject') {
         this.results = [];
         this.queue = [];
-        this.promise = new class_Dfr;        
+        this.promise = new class_Dfr;
     }
 
     start (): PromiseLike<TResult[]> {
-        setImmediate(() => this.tick());
+        $$setImmediate(() => this.tick());
         return this.promise;
     }
 
@@ -32,10 +38,10 @@ export class AsyncPool <TModel, TResult> {
 
             let promise = this.stream.nextAsync();
             this.waitFor(promise, index);
-        } 
+        }
 
         if (this.queue.length === 0 && this.resolved !== true) {
-            this.resolved = true;            
+            this.resolved = true;
             (this.promise as any).resolve(this.results);
         }
     }
@@ -44,9 +50,9 @@ export class AsyncPool <TModel, TResult> {
         this.queue.push(promise);
 
         promise.then(result => {
-            setImmediate(() => this.continueFor(promise, index, null, result));
+            $$setImmediate(() => this.continueFor(promise, index, null, result));
         }, error => {
-            setImmediate(() => this.continueFor(promise, index, error, null));
+            $$setImmediate(() => this.continueFor(promise, index, error, null));
         });
     }
     private continueFor(promise: Promise<AlotStreamIterationResult<TResult>>, index: number, error: Error, result: AlotStreamIterationResult<TResult>) {
