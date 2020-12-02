@@ -95,10 +95,30 @@ declare module 'alot/AlotProto' {
         find(matcher?: (x: T, i?: number) => boolean): T;
         sum(getVal: (x: T, i?: number) => number): number;
         sumAsync(getVal: (x: T, i?: number) => number | Promise<number>): Promise<number>;
-        max<TOut>(fn: (x: T, i?: number) => TOut): TOut;
-        maxAsync<TOut>(fn: (x: T, i?: number) => TOut): Promise<TOut>;
-        min<TOut>(fn: (x: T, i?: number) => TOut): TOut;
-        minAsync<TOut>(fn: (x: T, i?: number) => TOut): Promise<TOut>;
+        max<TOut extends number | {
+            valueOf: () => number;
+        }>(fn: (x: T, i?: number) => TOut): TOut;
+        maxAsync<TOut extends number | {
+            valueOf: () => number;
+        }>(fn: (x: T, i?: number) => TOut): Promise<TOut>;
+        maxItem<TOut extends number | {
+            valueOf: () => number;
+        }>(fn: (x: T, i?: number) => TOut): T;
+        maxItemAsync<TOut extends number | {
+            valueOf: () => number;
+        }>(fn: (x: T, i?: number) => TOut): Promise<T>;
+        min<TOut extends number | {
+            valueOf: () => number;
+        }>(fn: (x: T, i?: number) => TOut): TOut;
+        minAsync<TOut extends number | {
+            valueOf: () => number;
+        }>(fn: (x: T, i?: number) => TOut): Promise<TOut>;
+        minItem<TOut extends number | {
+            valueOf: () => number;
+        }>(fn: (x: T, i?: number) => TOut): T;
+        minItemAsync<TOut extends number | {
+            valueOf: () => number;
+        }>(fn: (x: T, i?: number) => TOut): Promise<T>;
     }
 }
 

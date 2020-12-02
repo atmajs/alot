@@ -85,21 +85,21 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     groupBy<TKey = string>(fn: GroupByKeyFn<T, TKey>) {
         return new GroupByStream<T, TKey>(this, fn);
     }
-    /** Join Left Inner  */ 
+    /** Join Left Inner  */
     join <TInner = T, TResult = T> (
-        inner: TInner[], 
-        getKey: (x: T) => string | number, 
+        inner: TInner[],
+        getKey: (x: T) => string | number,
         getForeignKey: (x: TInner) => string | number,
-        joinFn: (a: T, b: TInner) => TResult, 
+        joinFn: (a: T, b: TInner) => TResult,
         ) {
         return new JoinStream(this, inner, getKey, getForeignKey, joinFn, 'inner');
     }
-    /** Join Full Outer  */ 
+    /** Join Full Outer  */
     joinOuter <TInner = T, TResult = T> (
-        inner: TInner[], 
-        getKey: (x: T) => string | number, 
+        inner: TInner[],
+        getKey: (x: T) => string | number,
         getForeignKey: (x: TInner) => string | number,
-        joinFn: (a?: T, b?: TInner) => TResult, 
+        joinFn: (a?: T, b?: TInner) => TResult,
         ) {
         return new JoinStream(this, inner, getKey, getForeignKey, joinFn, 'outer');
     }
@@ -192,16 +192,28 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     sumAsync (getVal: (x: T, i?: number) => number | Promise<number>): Promise<number> {
         return Aggregation.sumAsync(this, getVal);
     }
-    max <TOut> (fn: (x: T, i?: number) => TOut): TOut {
-        return Aggregation.getMinMaxBy(this, fn, 'max');
+    max <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): TOut {
+        return Aggregation.getMinMaxValueBy(this, fn, 'max');
     }
-    maxAsync <TOut> (fn: (x: T, i?: number) => TOut): Promise<TOut> {
-        return Aggregation.getMinMaxByAsync(this, fn, 'max');
+    maxAsync <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): Promise<TOut> {
+        return Aggregation.getMinMaxValueByAsync(this, fn, 'max');
     }
-    min <TOut> (fn: (x: T, i?: number) => TOut): TOut {
-        return Aggregation.getMinMaxBy(this, fn, 'min');
+    maxItem <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): T {
+        return Aggregation.getMinMaxItemBy(this, fn, 'max');
     }
-    minAsync <TOut> (fn: (x: T, i?: number) => TOut): Promise<TOut> {
-        return Aggregation.getMinMaxByAsync(this, fn, 'min');
+    maxItemAsync <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): Promise<T> {
+        return Aggregation.getMinMaxItemByAsync(this, fn, 'max');
+    }
+    min <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): TOut {
+        return Aggregation.getMinMaxValueBy(this, fn, 'min');
+    }
+    minAsync <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): Promise<TOut> {
+        return Aggregation.getMinMaxValueByAsync(this, fn, 'min');
+    }
+    minItem <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): T {
+        return Aggregation.getMinMaxItemBy(this, fn, 'min');
+    }
+    minItemAsync <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): Promise<T> {
+        return Aggregation.getMinMaxItemByAsync(this, fn, 'min');
     }
 }

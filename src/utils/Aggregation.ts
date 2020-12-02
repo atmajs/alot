@@ -1,11 +1,16 @@
 import { IAlotStream } from '../streams/IAlotStream';
 
 export namespace Aggregation {
-    export function getMinMaxBy<T, TOut> (stream: IAlotStream<T>, getFn: (x: T, i?: number) => TOut, compare: 'min' | 'max') {
-        let out:TOut = null;
+    function getMinMaxByEntryInner<T, TOut> (
+        stream: IAlotStream<T>
+        , getFn: (x: T, i?: number) => TOut
+        , compare: 'min' | 'max'
+    ): { value: TOut, entry: T } {
+        let outVal:TOut = null;
+        let outEntry: T = null;
         stream.reset();
         if (stream.isAsync) {
-            return getMinMaxByAsync(stream, getFn, compare) as any;
+            return getMinMaxByEntryInnerAsync(stream, getFn, compare) as any;
         }
         let i = 0;
         while (true) {
@@ -17,21 +22,29 @@ export namespace Aggregation {
             if (val == null) {
                 continue;
             }
-            if (out == null) {
-                out = val;
+            if (outVal == null) {
+                outVal = val;
+                outEntry = entry.value;
                 continue;
             }
-            if (compare === 'max' && out < val) {
-                out = val;
+            if (compare === 'max' && outVal < val) {
+                outVal = val;
+                outEntry = entry.value;
             }
-            if (compare === 'min' && out > val) {
-                out = val;
+            if (compare === 'min' && outVal > val) {
+                outVal = val;
+                outEntry = entry.value;
             }
         }
-        return out;
+        return { value: outVal, entry: outEntry };
     }
-    export async function getMinMaxByAsync<T, TOut> (stream: IAlotStream<T>, getFn: (x: T, i?: number) => TOut | Promise<TOut>, compare: 'min' | 'max') {
-        let out:TOut = null;
+    async function getMinMaxByEntryInnerAsync<T, TOut> (
+        stream: IAlotStream<T>
+        , getFn: (x: T, i?: number) => TOut | Promise<TOut>
+        , compare: 'min' | 'max'
+    ): Promise<{ value: TOut, entry: T }> {
+        let outVal:TOut = null;
+        let outEntry: T = null;
         stream.reset();
         let i = 0;
         while (true) {
@@ -43,18 +56,61 @@ export namespace Aggregation {
             if (val == null) {
                 continue;
             }
-            if (out == null) {
-                out = val;
+            if (outVal == null) {
+                outVal = val;
+                outEntry = entry.value;
                 continue;
             }
-            if (compare === 'max' && out < val) {
-                out = val;
+            if (compare === 'max' && outVal < val) {
+                outVal = val;
+                outEntry = entry.value;
             }
-            if (compare === 'min' && out > val) {
-                out = val;
+            if (compare === 'min' && outVal > val) {
+                outVal = val;
+                outEntry = entry.value;
             }
         }
-        return out;
+        return { value: outVal, entry: outEntry };
+    }
+
+    export function getMinMaxValueBy<T, TOut> (
+        stream: IAlotStream<T>
+        , getFn: (x: T, i?: number) => TOut
+        , compare: 'min' | 'max'
+    ) {
+        if (stream.isAsync) {
+            return getMinMaxByEntryInnerAsync(stream, getFn, compare) as any;
+        }
+        let x = getMinMaxByEntryInner(stream, getFn, compare);
+        return x.value;
+    }
+    export async function getMinMaxValueByAsync<T, TOut> (
+        stream: IAlotStream<T>
+        , getFn: (x: T, i?: number) => TOut | Promise<TOut>
+        , compare: 'min' | 'max'
+    ) {
+        let x = await getMinMaxByEntryInner(stream, getFn, compare);
+        return x.value;
+    }
+
+    export function getMinMaxItemBy<T, TOut> (
+        stream: IAlotStream<T>
+        , getFn: (x: T, i?: number) => TOut
+        , compare: 'min' | 'max'
+    ) {
+        if (stream.isAsync) {
+            return getMinMaxByEntryInnerAsync(stream, getFn, compare) as any;
+        }
+        let x = getMinMaxByEntryInner(stream, getFn, compare);
+        return x.entry;
+    }
+    export async function getMinMaxItemByAsync<T, TOut> (
+        stream: IAlotStream<T>
+        , getFn: (x: T, i?: number) => TOut | Promise<TOut>
+        , compare: 'min' | 'max'
+    ) {
+        let x = await getMinMaxByEntryInner(stream, getFn, compare);
+        return x.entry;
     }
 
     export function sum <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => number): number {
