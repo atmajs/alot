@@ -132,11 +132,13 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
                 return hash;
             }
             let key = keyFn(x.value);
-
             hash[key] = valFn ? valFn(x.value) : x.value;
         }
     }
-    async toDictionaryAsync(keyFn: (x: T) => string | Promise<string> | any, valFn?: (x: T) => Promise<any> | any): Promise<{ [key: string]: T }> {
+    async toDictionaryAsync<TKey = string, TValue = any>(
+        keyFn: (x: T) => Promise<TKey> | TKey,
+        valFn?: (x: T) => Promise<TValue> | TValue
+    ): Promise<{ [key: string]: T }> {
         this.reset();
         let hash = Object.create(null);
         while (true) {
@@ -148,6 +150,41 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
 
             hash[key] = valFn ? await valFn(x.value) : x.value;
         }
+        return hash;
+    }
+    toMap<TKey = string, TValue = any>(
+        keyFn: (x: T) => TKey,
+        valFn?: (x: T) => TValue,
+    ): Map<TKey, TValue> {
+        this.reset();
+        let map = new Map<TKey, TValue>();
+        while (true) {
+            let x = this.next();
+            if (x.done) {
+                return map;
+            }
+            let key = keyFn(x.value);
+            let value = valFn != null ? valFn(x.value) : x.value;
+            map.set(key, value as TValue);
+        }
+    }
+    async toMapAsync<TKey = string, TValue = any>(
+        keyFn: (x: T) => Promise<TKey> | TKey,
+        valFn?: (x: T) => Promise<TValue> | TValue,
+    ): Promise<Map<TKey, TValue>> {
+        this.reset();
+
+        let map = new Map<TKey, TValue>();
+        while (true) {
+            let x = await this.nextAsync();
+            if (x.done) {
+                return map;
+            }
+            let key = await keyFn(x.value);
+            let value = valFn != null ? await valFn(x.value) : x.value;
+            map.set(key, value as TValue);
+        }
+        return map;
     }
     toArray(): T[] {
         this.reset();
