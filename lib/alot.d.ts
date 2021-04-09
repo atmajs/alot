@@ -86,9 +86,11 @@ declare module 'alot/AlotProto' {
         toDictionary<TKey = string, TValue = any>(keyFn: (x: T) => TKey, valFn?: (x: T) => TValue): {
             [key: string]: TValue;
         };
-        toDictionaryAsync(keyFn: (x: T) => string | Promise<string> | any, valFn?: (x: T) => Promise<any> | any): Promise<{
+        toDictionaryAsync<TKey = string, TValue = any>(keyFn: (x: T) => Promise<TKey> | TKey, valFn?: (x: T) => Promise<TValue> | TValue): Promise<{
             [key: string]: T;
         }>;
+        toMap<TKey = string, TValue = any>(keyFn: (x: T) => TKey, valFn?: (x: T) => TValue): Map<TKey, TValue>;
+        toMapAsync<TKey = string, TValue = any>(keyFn: (x: T) => Promise<TKey> | TKey, valFn?: (x: T) => Promise<TValue> | TValue): Promise<Map<TKey, TValue>>;
         toArray(): T[];
         toArrayAsync(meta?: AlotMetaAsync): PromiseLike<T[]>;
         first(matcher?: (x: T, i?: number) => boolean): T;
