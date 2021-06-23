@@ -1,9 +1,8 @@
 <h1><font color='red'><code>a</code></font><code>lot</code></h1>
 ----
 
-[![Build Status](https://travis-ci.org/atmajs/alot.png?branch=master)](https://travis-ci.org/tenbits/alot)
+[![Build Status](https://api.travis-ci.com/atmajs/alot.png?branch=master)](https://travis-ci.com/atmajs/alot)
 [![NPM version](https://badge.fury.io/js/alot.svg)](http://badge.fury.io/js/alot)
-[![Bower version](https://badge.fury.io/bo/alot.svg)](http://badge.fury.io/bo/alot)
 
 
 **Lazy** and perfomance-optimized `Collection` methods
@@ -33,7 +32,7 @@ const users = await Alot(arr)
 
 ```
 
-Methods: 
+Methods:
 
 ### `map`, `mapAsync`
 
@@ -45,7 +44,7 @@ map <T, TResult> (fn: (x: T, i?: number) => TResult): IAlotStream<TResult>
 mapAsync <T, TResult> (fn: (x: T, i?: number) => PromiseLike<TResult>): IAlotStream<TResult>
 ```
 
-### `mapMany`, 'mapManyAsync
+### `mapMany`, `mapManyAsync`
 
 ```ts
 map <T, TResult> (fn: (x: T, i?: number) => TResult[]): IAlotStream<TResult>
@@ -109,16 +108,16 @@ groupBy <T, TKey = string > (fn: (x: T) => TKey): IAlotStream< { key: TKey[], va
 ```ts
 // Inner Left Join
 join <TInner, TResult> (
-    inner: TInner[], 
-    getKey: (x: T) => string | number, 
+    inner: TInner[],
+    getKey: (x: T) => string | number,
     getForeignKey: (x: TInner) => string | number,
     joinFn: (a: T, b: TInner) => TResult
 ): IAlotStream< TResult >
 
 // Outer Full Join
 joinOuter <TInner, TResult> (
-    inner: TInner[], 
-    getKey: (x: T) => string | number, 
+    inner: TInner[],
+    getKey: (x: T) => string | number,
     getForeignKey: (x: TInner) => string | number,
     joinFn: (a: T, b: TInner) => TResult
 ): IAlotStream< TResult >
@@ -151,15 +150,30 @@ toArray(): T[]
 ### `toArrayAsync`
 
 ```ts
-toArrayAsync(options: { threads: number } = { threads: 4 }): Promise<T[]>
+toArrayAsync(options: {
+    threads?: number
+    errors?: 'reject' | 'include' | 'ignore'
+} = { threads: 4, errors: 'reject' }): Promise<T[]>
 ```
 
+> `errors` 'reject' - all iterations will be stopped and the task will reject.
+> `errors` 'include' - all iterations will be executed, and any throw or rejection will be in resulted array.
+> `errors` 'ignore' - all iterations will be executed, and any throw or rejection are ignored. The resulted array could contain holes.
 
-### `toArrayDictionary`
+### `toDictionary` `toDictionaryAsync`
 
 ```ts
-toDictionary<TOut = T>(keyFn: (x: T) => string | number, valFn?: (x: T) => TOut ): { [key: string]: TOut }
+toDictionary<TKey = string | number, TOut = T>(keyFn: (x: T) => TKey, valFn?: (x: T) => TOut ): { [key: string]: TOut }
+toDictionaryAsync<TKey = string | number, TOut = T>(keyFn: (x: T) => TKey | Promise<TKey>, valFn?: (x: T) => TOut | Promise<TOut> ): Promise<{ [key: string]: TOut }>
 ```
+
+### `toMap` `toMapAsync`
+
+```ts
+toDictionary<TKey = any, TOut = T>(keyFn: (x: T) => TKey, valFn?: (x: T) => TOut ): Map<TKey, TOut>
+toDictionaryAsync<TKey = any, TOut = T>(keyFn: (x: T) => TKey | Promise<TKey>, valFn?: (x: T) => TOut | Promise<TOut> ): Promise<Map<TKey, TOut>>
+```
+
 
 ### `first`, `find` (alias)
 
