@@ -10,6 +10,7 @@ interface IAlotConstructor {
 
     default: IAlotConstructor
     fromObject: typeof AlotInner.fromObject
+    fromRange: typeof AlotInner.fromRange
 }
 
 @Classify

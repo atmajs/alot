@@ -16,11 +16,19 @@ export class Alot<T = any> extends AlotProto<T> {
         });
         return new Alot(arr);
     }
+
+    static fromRange(start: number, endExcluded: number) {
+        let arr = new Array(endExcluded - start);
+        for (let i = start; i < endExcluded; i++) {
+            arr[i - start] = i;
+        }
+        return new Alot(arr);
+    }
 }
 
 export class ArrayStream<T> implements IAlotStream<T> {
     isAsync = false
-    
+
     private index = -1;
     constructor (public array: T[]) {}
     next (): AlotStreamIterationResult<T> {

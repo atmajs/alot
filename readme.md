@@ -12,21 +12,21 @@
 
 
 
-```typescript
+```ts
 
-import { Alot } from 'alot';
+import alot from 'alot';
 
 const arr = [1,2,3, 4];
 
 // Sync
-const numbers = Alot(arr)
+const numbers = alot(arr)
     .filter(x => x * 2)
     .skip(1)
     .take(2)
     .toArray();
 
 // Async
-const users = await Alot(arr)
+const users = await alot(arr)
     .mapAsync(async id => UserService.loadById(id))
     .toArrayAsync({ threads: 4 });
 
@@ -175,11 +175,14 @@ toDictionaryAsync<TKey = any, TOut = T>(keyFn: (x: T) => TKey | Promise<TKey>, v
 ```
 
 
-### `first`, `find` (alias)
+### `first`, `find` (alias), `firstAsync`, `findAsync`
 
 ```ts
 first(matcher?: (x: T, i?: number) => boolean): T
 find(matcher?: (x: T, i?: number) => boolean): T
+
+firstAsync(matcher?: (x: T, i?: number) => boolean | Promise<boolean>): Promise<T>
+find(matcher?: (x: T, i?: number) => boolean | Promise<boolean>): Promise<T>
 ```
 
 # Aggregation
@@ -200,6 +203,23 @@ maxAsync <TOut> (getVal: (x: T, i?: number) => TOut): Promise<TOut>
 min <TOut> (getVal: (x: T, i?: number) => TOut): TOut
 minAsync <TOut> (getVal: (x: T, i?: number) => TOut): Promise<TOut>
 
+```
+
+
+# Static Methods
+
+
+#### `fromObject`
+
+```ts
+alot.fromObject(foo: any): Alot<{ key: string, value: string }>
+```
+
+
+#### `fromRange`
+
+```ts
+alot.fromRange(start: number, endExcluded: number): Alot<number>
 ```
 
 ----

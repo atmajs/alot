@@ -2,7 +2,7 @@ import { IAlotStream } from "./IAlotStream";
 import { AlotProto } from "../AlotProto";
 
 
-export interface DistinctByKeyFn<T, TKey = string> {
+export interface DistinctByKeyFn<T, TKey = string | number> {
     (x: T, i?: number): TKey
 }
 
@@ -19,8 +19,8 @@ export class DistinctByStream<T, TKey = string | number> extends AlotProto<T> {
             if (result.done === true) {
                 return result;
             }
-            let key = this.fn != null 
-                ? this.fn(result.value, result.index) 
+            let key = this.fn != null
+                ? this.fn(result.value, result.index)
                 : result.value;
 
             if (this._track.isUnique(key) === false) {

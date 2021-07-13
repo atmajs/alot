@@ -29,6 +29,7 @@ import {
     SortMethod,
     JoinStream
 } from './streams/exports';
+import { is_Promise } from './utils/is';
 
 export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     isAsync = false;
@@ -219,8 +220,31 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         }
         return null;
     }
+    async firstAsync(matcher?: (x: T, i?: number) => (boolean | Promise<boolean>)): Promise<T> {
+        this.reset();
+
+        let i = 0;
+        while (true) {
+            let entry = await this.nextAsync();
+            if (entry == null || entry.done === true) {
+                break;
+            }
+            if (matcher == null) {
+                return entry.value;
+            }
+            let mix = matcher(entry.value, i++);
+            let result: boolean = is_Promise(mix) ? await mix : mix;
+            if (result) {
+                return entry.value;
+            }
+        }
+        return null;
+    }
     find(matcher?: (x: T, i?: number) => boolean): T {
         return this.first(matcher);
+    }
+    findAsync(matcher?: (x: T, i?: number) => (boolean | Promise<boolean>)): Promise<T> {
+        return this.firstAsync(matcher);
     }
 
     sum (getVal: (x: T, i?: number) => number): number {

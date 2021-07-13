@@ -9,6 +9,7 @@ declare module 'alot' {
         <T>(array: T[], meta?: AlotMeta): AlotInner<T>;
         default: IAlotConstructor;
         fromObject: typeof AlotInner.fromObject;
+        fromRange: typeof AlotInner.fromRange;
     }
     const alot: IAlotConstructor;
     export = alot;
@@ -27,6 +28,7 @@ declare module 'alot/alot' {
             key: string;
             value: any;
         }>;
+        static fromRange(start: number, endExcluded: number): Alot<any>;
     }
     export class ArrayStream<T> implements IAlotStream<T> {
         array: T[];
@@ -78,7 +80,7 @@ declare module 'alot/AlotProto' {
         join<TInner = T, TResult = T>(inner: TInner[], getKey: (x: T) => string | number, getForeignKey: (x: TInner) => string | number, joinFn: (a: T, b: TInner) => TResult): JoinStream<T, TInner, TResult>;
         /** Join Full Outer  */
         joinOuter<TInner = T, TResult = T>(inner: TInner[], getKey: (x: T) => string | number, getForeignKey: (x: TInner) => string | number, joinFn: (a?: T, b?: TInner) => TResult): JoinStream<T, TInner, TResult>;
-        distinctBy(fn: DistinctByKeyFn<T>): DistinctByStream<T, string>;
+        distinctBy(fn: DistinctByKeyFn<T>): DistinctByStream<T, string | number>;
         distinct(): DistinctByStream<T, string | number>;
         sortBy(sortByFn: SortMethod<T>, direction?: 'asc' | 'desc'): SortByStream<T>;
         sortBy(sortByKey: keyof T | string, direction?: 'asc' | 'desc'): SortByStream<T>;
@@ -94,7 +96,9 @@ declare module 'alot/AlotProto' {
         toArray(): T[];
         toArrayAsync(meta?: AlotMetaAsync): PromiseLike<T[]>;
         first(matcher?: (x: T, i?: number) => boolean): T;
+        firstAsync(matcher?: (x: T, i?: number) => (boolean | Promise<boolean>)): Promise<T>;
         find(matcher?: (x: T, i?: number) => boolean): T;
+        findAsync(matcher?: (x: T, i?: number) => (boolean | Promise<boolean>)): Promise<T>;
         sum(getVal: (x: T, i?: number) => number): number;
         sumAsync(getVal: (x: T, i?: number) => number | Promise<number>): Promise<number>;
         max<TOut extends number | {
@@ -281,7 +285,7 @@ declare module 'alot/streams/DistinctStream' {
     import { AlotStreamIterationResult } from 'alot/streams/IAlotStream'; 
      import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
-    export interface DistinctByKeyFn<T, TKey = string> {
+    export interface DistinctByKeyFn<T, TKey = string | number> {
             (x: T, i?: number): TKey;
     }
     export class DistinctByStream<T, TKey = string | number> extends AlotProto<T> {
