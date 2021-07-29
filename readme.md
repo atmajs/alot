@@ -1,4 +1,6 @@
-<h1><font color='red'><code>a</code></font><code>lot</code></h1>
+<p align='center'>
+    <img src='assets/background.png'/>
+</p>
 ----
 
 [![Build Status](https://api.travis-ci.com/atmajs/alot.png?branch=master)](https://travis-ci.com/atmajs/alot)
