@@ -2,6 +2,7 @@ import { MethodFilter } from './Methods';
 import { AlotMeta, AlotMetaAsync, AlotStreamOpts } from './AlotMeta';
 import { AsyncPool } from './async/Pool';
 import { Aggregation, TAggregateNumeric } from './utils/Aggregation'
+/** Loading all stream from extra exports file to fix circular dependencies */
 import {
     IAlotStream,
     AlotStreamIterationResult,
@@ -26,12 +27,12 @@ import {
     ForkStreamInner,
     ForkStreamOuter,
     SortByStream,
+    SortByLocalCompareStream,
     SortMethod,
     JoinStream
 } from './streams/exports';
 import { is_Promise } from './utils/is';
 import { ParametersFromSecond } from './utils/types';
-import { SortByLocalCompareStream } from './streams/SortedStream';
 
 export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     isAsync = false;
@@ -44,13 +45,26 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     async nextAsync(): Promise<AlotStreamIterationResult<T>> {
         return this.next();
     }
-    reset() {
+    /**
+     * Resets current stream to the beginning.
+     */
+    reset(): this {
         this.stream.reset();
         return this;
     }
+    /**
+     * Creates filtered stream. Is Lazy.
+     * ```
+     * alot(users).filter(x => x.age > 20).take(3).toArray();
+     * ```
+     * Filter is evaluated only N times, to match only 3 items.
+     */
     filter(fn: MethodFilter<T>) {
         return new FilterStream(this, fn);
     }
+    /**
+     * Creates async filted stream. Same as filter, but accepts async methods, and returns awaitable stream.
+     */
     filterAsync(fn: MethodFilter<T>) {
         return new FilterStreamAsync(this, fn);
     }
