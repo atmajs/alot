@@ -28,7 +28,7 @@
         "server": "atma server",
         "build-dts": "tsc -p tsconfig-build.json && atma run tools/build-dts",
         "release": "echo \"Run atma pub -m \"message\"\"",
-        "typedoc": "typedoc --tsconfig ./tsconfig-typedoc.json"
+        "typedoc": "typedoc --tsconfig ./tsconfig-typedoc.json && atma task copy"
     },
     "license": "MIT",
     "app-bundler": {
@@ -83,6 +83,13 @@
                             "module": "AMD"
                         }
                     }
+                }
+            }
+        },
+        "tasks": {
+            "copy": {
+                "files": {
+                    "./assets/background.png": "./docs/assets/background.png"
                 }
             }
         }

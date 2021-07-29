@@ -173,7 +173,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides AlotProto&lt;T&gt;.constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/alot.ts#L9">alot.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/alot.ts#L9">alot.ts:9</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -212,7 +212,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from AlotProto.isAsync</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L37">AlotProto.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L38">AlotProto.ts:38</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -245,7 +245,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.distinct</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L113">AlotProto.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L127">AlotProto.ts:127</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">DistinctByStream</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -263,7 +263,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.distinctBy</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L110">AlotProto.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L124">AlotProto.ts:124</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -287,9 +287,17 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.filter</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L51">AlotProto.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L62">AlotProto.ts:62</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates filtered stream. Is Lazy.</p>
+									<pre><code><span style="color: #795E26">alot</span><span style="color: #000000">(</span><span style="color: #001080">users</span><span style="color: #000000">).</span><span style="color: #795E26">filter</span><span style="color: #000000">(</span><span style="color: #001080">x</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">x</span><span style="color: #000000">.</span><span style="color: #001080">age</span><span style="color: #000000"> &gt; </span><span style="color: #098658">20</span><span style="color: #000000">).</span><span style="color: #795E26">take</span><span style="color: #000000">(</span><span style="color: #098658">3</span><span style="color: #000000">).</span><span style="color: #795E26">toArray</span><span style="color: #000000">();</span>
+</code></pre>
+									<p>Filter is evaluated only N times, to match only 3 items.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -311,9 +319,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.filterAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L54">AlotProto.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L68">AlotProto.ts:68</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates async filted stream. Same as filter, but accepts async methods, and returns awaitable stream.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -335,7 +348,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.find</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L249">AlotProto.ts:249</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L263">AlotProto.ts:263</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -380,7 +393,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.findAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L252">AlotProto.ts:252</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L266">AlotProto.ts:266</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -425,7 +438,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.first</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L214">AlotProto.ts:214</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L228">AlotProto.ts:228</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -470,7 +483,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.firstAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L229">AlotProto.ts:229</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L243">AlotProto.ts:243</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -515,7 +528,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.forEach</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L69">AlotProto.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L83">AlotProto.ts:83</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -539,7 +552,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.forEachAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L72">AlotProto.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L86">AlotProto.ts:86</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -569,7 +582,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.fork</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L127">AlotProto.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L141">AlotProto.ts:141</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -611,7 +624,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.groupBy</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L88">AlotProto.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L102">AlotProto.ts:102</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -641,7 +654,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.join</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L92">AlotProto.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L106">AlotProto.ts:106</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -745,7 +758,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.joinOuter</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L101">AlotProto.ts:101</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L115">AlotProto.ts:115</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -849,7 +862,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.map</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L57">AlotProto.ts:57</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L71">AlotProto.ts:71</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -879,7 +892,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.mapAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L60">AlotProto.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L74">AlotProto.ts:74</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -912,7 +925,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.mapMany</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L63">AlotProto.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L77">AlotProto.ts:77</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -942,7 +955,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.mapManyAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L66">AlotProto.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L80">AlotProto.ts:80</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -972,7 +985,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.max</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L270">AlotProto.ts:270</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L284">AlotProto.ts:284</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1023,7 +1036,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.maxAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L273">AlotProto.ts:273</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L287">AlotProto.ts:287</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1074,7 +1087,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.maxItem</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L276">AlotProto.ts:276</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L290">AlotProto.ts:290</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1125,7 +1138,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.maxItemAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L279">AlotProto.ts:279</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L293">AlotProto.ts:293</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1176,7 +1189,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.min</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L282">AlotProto.ts:282</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L296">AlotProto.ts:296</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1227,7 +1240,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.minAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L285">AlotProto.ts:285</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L299">AlotProto.ts:299</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1278,7 +1291,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.minItem</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L288">AlotProto.ts:288</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L302">AlotProto.ts:302</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1329,7 +1342,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.minItemAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L291">AlotProto.ts:291</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L305">AlotProto.ts:305</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1380,7 +1393,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.next</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L41">AlotProto.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L42">AlotProto.ts:42</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">AlotStreamIterationResult</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1398,7 +1411,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.nextAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L44">AlotProto.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L45">AlotProto.ts:45</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">AlotStreamIterationResult</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1416,9 +1429,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.reset</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L47">AlotProto.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L51">AlotProto.ts:51</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Resets current stream to the beginning.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="Alot.html" class="tsd-signature-type" data-tsd-kind="Class">Alot</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -1434,7 +1452,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.skip</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L81">AlotProto.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L95">AlotProto.ts:95</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1458,7 +1476,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.skipWhile</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L84">AlotProto.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L98">AlotProto.ts:98</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1483,7 +1501,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.sortBy</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L117">AlotProto.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L131">AlotProto.ts:131</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1501,7 +1519,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.sortBy</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L118">AlotProto.ts:118</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L132">AlotProto.ts:132</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1528,7 +1546,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.sortByLocalCompare</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L123">AlotProto.ts:123</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L137">AlotProto.ts:137</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1580,7 +1598,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.sum</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L256">AlotProto.ts:256</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L270">AlotProto.ts:270</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1619,7 +1637,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.sum</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L257">AlotProto.ts:257</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L271">AlotProto.ts:271</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1667,7 +1685,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.sumAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L261">AlotProto.ts:261</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L275">AlotProto.ts:275</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1715,7 +1733,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.sumBigInt</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L264">AlotProto.ts:264</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L278">AlotProto.ts:278</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1760,7 +1778,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.sumBigIntAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L267">AlotProto.ts:267</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L281">AlotProto.ts:281</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1808,7 +1826,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.take</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L75">AlotProto.ts:75</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L89">AlotProto.ts:89</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1832,7 +1850,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.takeWhile</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L78">AlotProto.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L92">AlotProto.ts:92</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1856,7 +1874,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.toArray</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L196">AlotProto.ts:196</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L210">AlotProto.ts:210</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -1874,7 +1892,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.toArrayAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L208">AlotProto.ts:208</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L222">AlotProto.ts:222</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1898,7 +1916,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.toDictionary</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L133">AlotProto.ts:133</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L147">AlotProto.ts:147</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1975,7 +1993,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.toDictionaryAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L145">AlotProto.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L159">AlotProto.ts:159</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2047,7 +2065,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.toMap</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L162">AlotProto.ts:162</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L176">AlotProto.ts:176</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2119,7 +2137,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AlotProto.toMapAsync</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/AlotProto.ts#L178">AlotProto.ts:178</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/AlotProto.ts#L192">AlotProto.ts:192</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2190,7 +2208,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/alot.ts#L13">alot.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/alot.ts#L13">alot.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2213,7 +2231,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/atmajs/alot/blob/fe4cdd6/src/alot.ts#L20">alot.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/atmajs/alot/blob/0f84d4e/src/alot.ts#L20">alot.ts:20</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
