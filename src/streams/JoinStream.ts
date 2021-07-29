@@ -6,8 +6,8 @@ import { r_DONE } from '../utils/r';
 // left inner join
 export interface MethodJoin<TOuter, TInner = TOuter, TResult = TOuter> {
     (
-        inner: TInner[], 
-        getOuterKey: (x: TOuter) => string | number, 
+        inner: TInner[],
+        getOuterKey: (x: TOuter) => string | number,
         getInnerKey: (x: TInner) => string | number,
         joinFn: (a: TOuter, b: TInner) => TResult
     ): TResult | PromiseLike<TResult>
@@ -16,8 +16,8 @@ export interface MethodJoin<TOuter, TInner = TOuter, TResult = TOuter> {
 // left outer join
 export interface MethodJoin<TOuter, TInner = TOuter, TResult = TOuter> {
     (
-        inner: TInner[], 
-        getOuterKey: (x: TOuter) => string | number, 
+        inner: TInner[],
+        getOuterKey: (x: TOuter) => string | number,
         getInnerKey: (x: TInner) => string | number,
         joinFn: (a?: TOuter, b?: TInner) => TResult
     ): TResult | PromiseLike<TResult>
@@ -33,17 +33,17 @@ export class JoinStream<TOuter, TInner = TOuter, TResult = TOuter> extends AlotP
     private _innerHashTook = Object.create(null);
 
     constructor(
-        public stream: IAlotStream<TOuter>, 
-        private inner: TInner[], 
-        private fnKeyOuter: (x: TOuter) => string | number, 
+        public stream: IAlotStream<TOuter>,
+        private inner: TInner[],
+        private fnKeyOuter: (x: TOuter) => string | number,
         private fnKeyInner: (x: TInner) => string | number,
-        private joinFn: (a?: TOuter, b?: TInner) => TResult, 
+        private joinFn: (a?: TOuter, b?: TInner) => TResult,
         private joinType: JoinType,
         opts?: AlotStreamOpts) {
 
         super(stream, opts);
     }
-    
+
     next() {
         if (this.isAsync) {
             return this.nextAsync() as any;
@@ -168,12 +168,12 @@ export class MapManyStream<T, TResult> extends AlotProto<TResult, T> {
             let result = await this.stream.next();
             if (result.done) {
                 this._done = true;
-                resolve();
+                resolve(null);
             }
             this._many = await this.fn(result.value, result.index);
             this._index = -1;
             this._mapDfr = null;
-            resolve()
+            resolve(null)
         });
     }
 }

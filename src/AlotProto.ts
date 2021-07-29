@@ -1,7 +1,7 @@
 import { MethodFilter } from './Methods';
 import { AlotMeta, AlotMetaAsync, AlotStreamOpts } from './AlotMeta';
 import { AsyncPool } from './async/Pool';
-import { Aggregation } from './utils/Aggregation'
+import { Aggregation, TAggregateNumeric } from './utils/Aggregation'
 import {
     IAlotStream,
     AlotStreamIterationResult,
@@ -30,6 +30,8 @@ import {
     JoinStream
 } from './streams/exports';
 import { is_Promise } from './utils/is';
+import { ParametersFromSecond } from './utils/types';
+import { SortByLocalCompareStream } from './streams/SortedStream';
 
 export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     isAsync = false;
@@ -116,6 +118,10 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     sortBy(sortByKey: keyof T | string, direction?: 'asc' | 'desc'): SortByStream<T>
     sortBy(mix: SortMethod<T> | keyof T | string, direction: 'asc' | 'desc' = 'asc'): SortByStream<T> {
         return new SortByStream(this, mix, direction);
+    }
+
+    sortByLocalCompare(getValFn: (x:T, i?: number) => string, direction?: 'asc' | 'desc', ...params: ParametersFromSecond<String['localeCompare']>): SortByLocalCompareStream<T> {
+        return new SortByLocalCompareStream(this, getValFn, direction, params);
     }
 
     fork(fn: (stream: this) => void | any): this {
@@ -247,34 +253,42 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         return this.firstAsync(matcher);
     }
 
-    sum (getVal: (x: T, i?: number) => number): number {
-        return Aggregation.sum(this, getVal);
+    sum (getVal: (x: T, i?: number) => number, initialValue?: number): number
+    sum (getVal: (x: T, i?: number) => bigint, initialValue: bigint): bigint
+    sum (getVal: (x: T, i?: number) => any, initialValue?: any): any {
+        return Aggregation.sum(this, getVal, initialValue ?? 0);
     }
-    sumAsync (getVal: (x: T, i?: number) => number | Promise<number>): Promise<number> {
-        return Aggregation.sumAsync(this, getVal);
+    sumAsync (getVal: (x: T, i?: number) => number | Promise<number>, initialValue?: number): Promise<number> {
+        return Aggregation.sumAsync(this, getVal, initialValue ?? 0);
     }
-    max <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): TOut {
+    sumBigInt (getVal: (x: T, i?: number) => bigint): bigint {
+        return Aggregation.sum(this, getVal, BigInt(0));
+    }
+    sumBigIntAsync (getVal: (x: T, i?: number) => bigint | Promise<bigint>, initialValue?: bigint): Promise<bigint> {
+        return Aggregation.sumAsync(this, getVal, initialValue ?? BigInt(0));
+    }
+    max <TOut extends TAggregateNumeric> (fn: (x: T, i?: number) => TOut): TOut {
         return Aggregation.getMinMaxValueBy(this, fn, 'max');
     }
-    maxAsync <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): Promise<TOut> {
+    maxAsync <TOut extends TAggregateNumeric> (fn: (x: T, i?: number) => TOut): Promise<TOut> {
         return Aggregation.getMinMaxValueByAsync(this, fn, 'max');
     }
-    maxItem <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): T {
+    maxItem <TOut extends TAggregateNumeric> (fn: (x: T, i?: number) => TOut): T {
         return Aggregation.getMinMaxItemBy(this, fn, 'max');
     }
-    maxItemAsync <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): Promise<T> {
+    maxItemAsync <TOut extends TAggregateNumeric> (fn: (x: T, i?: number) => TOut): Promise<T> {
         return Aggregation.getMinMaxItemByAsync(this, fn, 'max');
     }
-    min <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): TOut {
+    min <TOut extends TAggregateNumeric> (fn: (x: T, i?: number) => TOut): TOut {
         return Aggregation.getMinMaxValueBy(this, fn, 'min');
     }
-    minAsync <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): Promise<TOut> {
+    minAsync <TOut extends TAggregateNumeric> (fn: (x: T, i?: number) => TOut): Promise<TOut> {
         return Aggregation.getMinMaxValueByAsync(this, fn, 'min');
     }
-    minItem <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): T {
+    minItem <TOut extends TAggregateNumeric> (fn: (x: T, i?: number) => TOut): T {
         return Aggregation.getMinMaxItemBy(this, fn, 'min');
     }
-    minItemAsync <TOut extends number | { valueOf: () => number }> (fn: (x: T, i?: number) => TOut): Promise<T> {
+    minItemAsync <TOut extends TAggregateNumeric> (fn: (x: T, i?: number) => TOut): Promise<T> {
         return Aggregation.getMinMaxItemByAsync(this, fn, 'min');
     }
 }

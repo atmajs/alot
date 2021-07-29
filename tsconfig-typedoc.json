@@ -1,5 +1,5 @@
 {
-    "exclude": ["node_modules"],
+    "exclude": ["node_modules", "ts-temp", "lib", "test"],
     "compilerOptions": {
         "outDir": "ts-temp",
         "lib": ["es2015", "es2015.promise", "es2016", "dom"],
@@ -15,5 +15,10 @@
         "module": "commonjs",
         "sourceMap": false,
         "experimentalDecorators": true
+    },
+    "typedocOptions": {
+        "name": "",
+        "entryPoints": ["src/alot.ts"],
+        "out": "docs"
     }
 }

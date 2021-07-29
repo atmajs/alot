@@ -5,7 +5,7 @@
         "name": "Alexander Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.2.86",
+    "version": "0.2.87",
     "main": "./lib/alot.js",
     "types": "./lib/alot.d.ts",
     "repository": {
@@ -18,7 +18,8 @@
         "app-bundler": "0.0.75",
         "atma": "^0.12.9",
         "atma-loader-ts": "^1.1.11",
-        "dts-bundle": "^0.7.3"
+        "dts-bundle": "^0.7.3",
+        "typedoc": "^0.21.4"
     },
     "scripts": {
         "test": "atma test",
@@ -26,7 +27,8 @@
         "watch": "app-bundler --watch",
         "server": "atma server",
         "build-dts": "tsc -p tsconfig-build.json && atma run tools/build-dts",
-        "release": "echo \"Run atma pub -m \"message\"\""
+        "release": "echo \"Run atma pub -m \"message\"\"",
+        "typedoc": "typedoc --tsconfig ./tsconfig-typedoc.json"
     },
     "license": "MIT",
     "app-bundler": {

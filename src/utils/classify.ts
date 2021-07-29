@@ -1,5 +1,5 @@
 function Classify (Ctor) {
-    
+
     const Class: typeof Ctor =  function (...args) {
         return new Ctor(...args);
     }
@@ -9,13 +9,13 @@ function Classify (Ctor) {
         if (key in Class === false) {
             Class[key] = Ctor[key];
         }
-    });    
-    return Class;    
+    });
+    return Class;
 }
 
 function FnPrototypeAlias (Ctor) {
     Ctor.fn = Ctor.prototype;
-    return Ctor;    
+    return Ctor;
 }
 
 
@@ -33,7 +33,7 @@ function forIn(obj: any, cb: (key: string) => void){
                 cb(key);
             }
             hash[key] = null;
-        }        
+        }
     }
     while (cursor = Object.getPrototypeOf(cursor));
 }

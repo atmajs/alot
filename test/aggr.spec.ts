@@ -23,6 +23,17 @@ UTest({
             let max = alot.max(x => x.date);
             eq_(max.getFullYear(), 2019);
         },
+        'max bigints' () {
+            let arr = [
+                { num: 2n },
+                { num: 5n },
+                { num: 4n },
+            ];
+            let alot = new Alot(arr);
+            let max = alot.max(x => x.num);
+            eq_(max, 5n);
+            eq_(typeof max, 'bigint');
+        },
         async 'maxAsync' () {
             let arr = [
                 { num: 2},

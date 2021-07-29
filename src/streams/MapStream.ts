@@ -11,7 +11,7 @@ export class MapStream<TSource, TResult> extends AlotProto<TResult, TSource> {
     constructor(public stream: IAlotStream<TSource>, public fn: MethodMap<TSource, TResult>, opts?: AlotStreamOpts) {
         super(stream, opts);
     }
-    
+
     next() {
         if (this.isAsync) {
             return this.nextAsync() as any;
@@ -102,13 +102,13 @@ export class MapManyStream<T, TResult> extends AlotProto<TResult, T> {
             if (result.done) {
                 this._done = true;
                 this._mapDfr =  null;
-                resolve();
+                resolve(null);
                 return;
             }
             this._many = await this.fn(result.value, result.index);
             this._index = -1;
             this._mapDfr = null;
-            resolve();
+            resolve(null);
         });
     }
 }

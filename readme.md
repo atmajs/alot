@@ -5,7 +5,7 @@
 [![NPM version](https://badge.fury.io/js/alot.svg)](http://badge.fury.io/js/alot)
 
 
-**Lazy** and perfomance-optimized `Collection` methods
+**Lazy** and performance-optimized `Collection` methods
 
 * supports **async** handlers
 * with **typescript** definitions
@@ -32,7 +32,11 @@ const users = await alot(arr)
 
 ```
 
-Methods:
+----
+[📚 API Documentation](https://docs.atma.dev/alot)
+----
+
+Methods overview:
 
 ### `map`, `mapAsync`
 
@@ -131,7 +135,7 @@ distinctBy <T, TKey = string> (fn: (x: T, i?: number) => TKey): IAlotStream<T>
 ```
 
 
-### `sortBy`
+### `sortBy`, `sortByLocalCompare`
 
 ```ts
 sortBy <T> (fn: (x: T, i?: number) => string | number, direction: 'asc' | 'desc' = 'asc'): IAlotStream<T>
@@ -187,7 +191,7 @@ find(matcher?: (x: T, i?: number) => boolean | Promise<boolean>): Promise<T>
 
 # Aggregation
 
-### `sum`, `sumAsync`
+### `sum`, `sumAsync`, `sumBigInt`, `sumBigIntAsync`
 
 ```ts
 sum      (fn: (x: T, i?: number) => number): number
@@ -197,11 +201,11 @@ sumAsync (fn: (x: T, i?: number) => number | Promise<number>): Promise<number>
 ### `max`, `maxAsync`, `min`, `minAsync`
 
 ```ts
-max <TOut> (getVal: (x: T, i?: number) => TOut): TOut
-maxAsync <TOut> (getVal: (x: T, i?: number) => TOut): Promise<TOut>
+max <TNumeric> (getVal: (x: T, i?: number) => TNumeric): TNumeric
+maxAsync <TNumeric> (getVal: (x: T, i?: number) => TNumeric): Promise<TNumeric>
 
-min <TOut> (getVal: (x: T, i?: number) => TOut): TOut
-minAsync <TOut> (getVal: (x: T, i?: number) => TOut): Promise<TOut>
+min <TNumeric> (getVal: (x: T, i?: number) => TOut): TNumeric
+minAsync <TNumeric> (getVal: (x: T, i?: number) => TOut): Promise<TNumeric>
 
 ```
 

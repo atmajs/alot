@@ -1,5 +1,7 @@
 import { IAlotStream } from '../streams/IAlotStream';
 
+export type TAggregateNumeric = number | { valueOf: () => number } | bigint;
+
 export namespace Aggregation {
     function getMinMaxByEntryInner<T, TOut> (
         stream: IAlotStream<T>
@@ -113,32 +115,44 @@ export namespace Aggregation {
         return x.entry;
     }
 
-    export function sum <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => number): number {
+    export function sum <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => number, startVal: number): number
+    export function sum <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => bigint, startVal: bigint): bigint
+    export function sum <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => any, startVal: any): any {
         stream.reset();
         if (stream.isAsync) {
-            return sumAsync(stream, fn) as any;
+            return sumAsync(stream, fn, startVal) as any;
         }
-        let sum = 0;
+        let sum = startVal;
         let i = 0;
         while (true) {
             let entry = stream.next();
             if (entry == null || entry.done === true) {
                 break;
             }
-            sum += fn(entry.value, i++) ?? 0;
+            let value = fn(entry.value, i++);
+            if (value == null) {
+                continue;
+            }
+            sum += value;
         }
         return sum;
     }
-    export async function sumAsync <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => number | Promise<number>): Promise<number> {
+    export async function sumAsync <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => number | Promise<number>, startVal: number): Promise<number>
+    export async function sumAsync <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => bigint | Promise<bigint>, startVal: bigint): Promise<bigint>
+    export async function sumAsync <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => any | Promise<any>, startVal: any): Promise<any> {
         stream.reset();
-        let sum = 0;
+        let sum = startVal;
         let i = 0;
         while (true) {
             let entry = await stream.nextAsync();
             if (entry == null || entry.done === true) {
                 break;
             }
-            sum += (await fn(entry.value, i++)) ?? 0;
+            let value = await fn(entry.value, i++);
+            if (value == null) {
+                continue;
+            }
+            sum += value;
         }
         return sum;
     }
