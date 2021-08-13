@@ -25,9 +25,9 @@ export class FilterStream<T> extends AlotProto<T> {
 }
 export class FilterStreamAsync<T> extends AlotProto<T> {
     isAsync = true;
-    
+
     private _index = -1;
-    
+
     constructor(public stream: IAlotStream<T>, public fn: MethodFilter<T>) {
         super(stream);
         this.next = this.nextAsync as any;
@@ -38,7 +38,6 @@ export class FilterStreamAsync<T> extends AlotProto<T> {
         let i = ++this._index;
 
         while (true) {
-            
             let result = await this.stream.next();
             if (result.done === true) {
                 return result;

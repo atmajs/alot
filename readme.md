@@ -81,17 +81,18 @@ forEach <T> (fn: (x: T, i?: number) => void | any): IAlotStream<T>
 forEachAsync <T> (fn: (x: T, i?: number) => void | any): IAlotStream<T>
 ```
 
-### `take`, `takeWhile`
+### `take`, `takeWhile`, `takeWhileAsync`
 
 ```ts
 take <T> (count: number): IAlotStream<T>
 ```
 
 ```ts
-takeWhile <T> (fn: (x: T, i?: number) => boolean): IAlotStream<T>
+takeWhile <T> (fn: (x: T) => boolean): IAlotStream<T>
+takeWhileAsync <T> (fn: (x: T) => boolean | Promise<boolean>): IAlotStream<T>
 ```
 
-### `skip`, `skipWhile`
+### `skip`, `skipWhile`, `skipWhileAsync`
 
 ```ts
 skip <T> (count: number): IAlotStream<T>
@@ -99,6 +100,7 @@ skip <T> (count: number): IAlotStream<T>
 
 ```ts
 skipWhile <T> (fn: (x: T, i?: number) => boolean): IAlotStream<T>
+skipWhileAsync <T> (fn: (x: T, i?: number) => boolean | Promise<boolean>): IAlotStream<T>
 ```
 
 

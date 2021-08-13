@@ -13,9 +13,13 @@ import {
     SkipStream,
     SkipWhileMethod,
     SkipWhileStream,
+    SkipWhileMethodAsync,
+    SkipWhileStreamAsync,
     TakeStream,
     TakeWhileStream,
+    TakeWhileStreamAsync,
     TakeWhileMethod,
+    TakeWhileMethodAsync,
     MapStream,
     MapManyStream,
     MethodMap,
@@ -92,13 +96,18 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     takeWhile(fn: TakeWhileMethod<T>) {
         return new TakeWhileStream(this, fn);
     }
+    takeWhileAsync(fn: TakeWhileMethodAsync<T>) {
+        return new TakeWhileStreamAsync(this, fn);
+    }
     skip(count: number) {
         return new SkipStream(this, count);
     }
     skipWhile(fn: SkipWhileMethod<T>) {
         return new SkipWhileStream(this, fn);
     }
-
+    skipWhileAsync(fn: SkipWhileMethodAsync<T>) {
+        return new SkipWhileStreamAsync(this, fn);
+    }
     groupBy<TKey = string>(fn: GroupByKeyFn<T, TKey>) {
         return new GroupByStream<T, TKey>(this, fn);
     }

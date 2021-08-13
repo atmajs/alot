@@ -5,7 +5,7 @@
         "name": "Alexander Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.2.89",
+    "version": "0.2.90",
     "main": "./lib/alot.js",
     "types": "./lib/alot.d.ts",
     "repository": {
@@ -23,7 +23,7 @@
     },
     "scripts": {
         "test": "atma test",
-        "build": "app-bundler && npm run build-dts",
+        "build": "app-bundler && npm run build-dts && npm run typedoc",
         "watch": "app-bundler --watch",
         "server": "atma server",
         "build-dts": "tsc -p tsconfig-build.json && atma run tools/build-dts",
