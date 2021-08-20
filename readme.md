@@ -140,7 +140,7 @@ distinctBy <T, TKey = string> (fn: (x: T, i?: number) => TKey): IAlotStream<T>
 ```
 
 
-### `sortBy`, `sortByLocalCompare`
+### `sortBy`, `sortByAsync`, `sortByLocalCompare`
 
 ```ts
 sortBy <T> (fn: (x: T, i?: number) => string | number, direction: 'asc' | 'desc' = 'asc'): IAlotStream<T>

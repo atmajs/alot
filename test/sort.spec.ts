@@ -15,6 +15,22 @@ UTest({
         let sortedDesc = alot.sortBy(x => x.name, 'desc').toArray();
         deepEq_(sortedDesc.map(x => x.name), ['f', 'f', 'b']);
     },
+    async 'sortBy Function Async ' () {
+        let arr = [
+            {num: 2 },
+            {num: 4 },
+            {num: 1 },
+            {num: 3 },
+        ];
+
+        let alot = new Alot(arr);
+        let sortedAsc = await alot
+            .mapAsync(x => Promise.resolve(x))
+            .sortByAsync(x => x.num)
+            .toArrayAsync();
+
+        deepEq_(sortedAsc.map(x => x.num), [1, 2, 3, 4]);
+    },
     'sortBy Property' () {
         let arr = [
             {id: 'foo', name: 'f'},

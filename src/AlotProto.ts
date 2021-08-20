@@ -143,6 +143,12 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         return new SortByStream(this, mix, direction);
     }
 
+    sortByAsync(sortByFn: SortMethod<T>, direction?: 'asc' | 'desc'): SortByStream<T>
+    sortByAsync(sortByKey: keyof T | string, direction?: 'asc' | 'desc'): SortByStream<T>
+    sortByAsync(mix: SortMethod<T> | keyof T | string, direction: 'asc' | 'desc' = 'asc'): SortByStream<T> {
+        return new SortByStream(this, mix, direction, /*isAsync*/ true);
+    }
+
     sortByLocalCompare(getValFn: (x:T, i?: number) => string, direction?: 'asc' | 'desc', ...params: ParametersFromSecond<String['localeCompare']>): SortByLocalCompareStream<T> {
         return new SortByLocalCompareStream(this, getValFn, direction, params);
     }

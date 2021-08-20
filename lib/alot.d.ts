@@ -102,6 +102,8 @@ declare module 'alot/AlotProto' {
             distinct(): DistinctByStream<T, string | number>;
             sortBy(sortByFn: SortMethod<T>, direction?: 'asc' | 'desc'): SortByStream<T>;
             sortBy(sortByKey: keyof T | string, direction?: 'asc' | 'desc'): SortByStream<T>;
+            sortByAsync(sortByFn: SortMethod<T>, direction?: 'asc' | 'desc'): SortByStream<T>;
+            sortByAsync(sortByKey: keyof T | string, direction?: 'asc' | 'desc'): SortByStream<T>;
             sortByLocalCompare(getValFn: (x: T, i?: number) => string, direction?: 'asc' | 'desc', ...params: ParametersFromSecond<String['localeCompare']>): SortByLocalCompareStream<T>;
             fork(fn: (stream: this) => void | any): this;
             toDictionary<TKey = string, TValue = any>(keyFn: (x: T) => TKey, valFn?: (x: T) => TValue): {
@@ -409,8 +411,9 @@ declare module 'alot/streams/SortedStream' {
         stream: IAlotStream<T>;
         direction: 'asc' | 'desc';
         isAsync: boolean;
-        constructor(stream: IAlotStream<T>, mix: SortMethod<T> | keyof T | string, direction?: 'asc' | 'desc');
+        constructor(stream: IAlotStream<T>, mix: SortMethod<T> | keyof T | string, direction?: 'asc' | 'desc', isAsync?: boolean);
         next(): any;
+        nextAsync(): Promise<any>;
         reset(): this;
     }
     export class SortByLocalCompareStream<T> extends AlotProto<T> {
