@@ -5,7 +5,7 @@
         "name": "Alexander Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.2.92",
+    "version": "0.2.93",
     "main": "./lib/alot.js",
     "types": "./lib/alot.d.ts",
     "repository": {
@@ -15,7 +15,7 @@
     "devDependencies": {
         "@types/node": "^12.12.6",
         "@types/sinon": "^2.3.3",
-        "app-bundler": "^0.0.97",
+        "app-bundler": "^0.0.98",
         "atma": "^0.12.9",
         "atma-loader-ts": "^1.1.11",
         "dts-bundle": "^0.7.3",
@@ -34,19 +34,6 @@
     "license": "MIT",
     "app-bundler": {
         "apps": {
-            "default": {
-                "outputMain": "lib/alot.js",
-                "settings": {
-                    "atma-loader-ts": {
-                        "typescript": {
-                            "compilerOptions": {
-                                "module": "CommonJS",
-                                "target": "ES2015"
-                            }
-                        }
-                    }
-                }
-            },
             "2020": {
                 "outputMain": "lib/alot.es2020.js",
                 "settings": {
@@ -55,6 +42,19 @@
                             "compilerOptions": {
                                 "module": "CommonJS",
                                 "target": "ES2020"
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "outputMain": "lib/alot.js",
+                "settings": {
+                    "atma-loader-ts": {
+                        "typescript": {
+                            "compilerOptions": {
+                                "module": "CommonJS",
+                                "target": "ES2015"
                             }
                         }
                     }
