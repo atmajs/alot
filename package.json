@@ -5,7 +5,7 @@
         "name": "Alexander Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.2.91",
+    "version": "0.2.92",
     "main": "./lib/alot.js",
     "types": "./lib/alot.d.ts",
     "repository": {
@@ -15,7 +15,7 @@
     "devDependencies": {
         "@types/node": "^12.12.6",
         "@types/sinon": "^2.3.3",
-        "app-bundler": "0.0.75",
+        "app-bundler": "^0.0.97",
         "atma": "^0.12.9",
         "atma-loader-ts": "^1.1.11",
         "dts-bundle": "^0.7.3",
@@ -27,35 +27,76 @@
         "build-bundle": "app-bundler",
         "build-dts": "tsc -p tsconfig-build.json && atma run tools/build-dts",
         "build-typedoc": "typedoc --tsconfig ./tsconfig-typedoc.json && atma task copy",
-
         "watch": "app-bundler --watch",
         "server": "atma server",
         "release": "echo \"Run atma pub -m \"message\"\""
     },
     "license": "MIT",
     "app-bundler": {
-        "file": "src/export.ts",
-        "outputMain": "lib/alot.js",
-        "package": {
-            "module": "commonjs",
-            "moduleName": "alot",
-            "moduleWrapper": "umd",
-            "commonjs": {
-                "output": "simplified"
+        "apps": {
+            "default": {
+                "outputMain": "lib/alot.js",
+                "settings": {
+                    "atma-loader-ts": {
+                        "typescript": {
+                            "compilerOptions": {
+                                "module": "CommonJS",
+                                "target": "ES2015"
+                            }
+                        }
+                    }
+                }
+            },
+            "2020": {
+                "outputMain": "lib/alot.es2020.js",
+                "settings": {
+                    "atma-loader-ts": {
+                        "typescript": {
+                            "compilerOptions": {
+                                "module": "CommonJS",
+                                "target": "ES2020"
+                            }
+                        }
+                    }
+                }
+            },
+            "es3": {
+                "outputMain": "lib/alot.es3.js",
+                "settings": {
+                    "atma-loader-ts": {
+                        "typescript": {
+                            "compilerOptions": {
+                                "module": "CommonJS",
+                                "target": "ES3"
+                            }
+                        }
+                    }
+                }
             }
         },
-        "extensions": {
-            "io": {
-                "type": "js"
+        "common": {
+            "file": "src/export.ts",
+            "package": {
+                "module": "commonjs",
+                "moduleName": "alot",
+                "moduleWrapper": "umd",
+                "commonjs": {
+                    "output": "simplified"
+                }
+            },
+            "extensions": {
+                "io": {
+                    "type": "js"
+                }
+            },
+            "defaultExtensions": {
+                "js": "ts"
+            },
+            "middlewares": {
+                "ts": [
+                    "atma-loader-ts:read"
+                ]
             }
-        },
-        "defaultExtensions": {
-            "js": "ts"
-        },
-        "middlewares": {
-            "ts": [
-                "atma-loader-ts:read"
-            ]
         }
     },
     "atma": {
@@ -81,8 +122,11 @@
                 ],
                 "typescript": {
                     "compilerOptions": {
+                        "module": "CommonJS",
+                        "target": "ES2015",
                         "#if (TEST)": {
-                            "module": "AMD"
+                            "module": "AMD",
+                            "target": "ES2015"
                         }
                     }
                 }

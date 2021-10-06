@@ -44,11 +44,17 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         this.isAsync = stream.isAsync || (opts?.async ?? false);
     }
     next(): AlotStreamIterationResult<T> {
-        return this.stream.next() as unknown as AlotStreamIterationResult<T>;
+        let x = this.stream.next() as unknown as AlotStreamIterationResult<T>;
+        return x;
     }
     async nextAsync(): Promise<AlotStreamIterationResult<T>> {
         return this.next();
     }
+
+    [Symbol.iterator] () {
+        return this;
+    }
+
     /**
      * Resets current stream to the beginning.
      */

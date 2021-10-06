@@ -1,3 +1,5 @@
+# Alot
+
 <p align='center'>
     <img src='assets/background.png'/>
 </p>
@@ -6,31 +8,29 @@
 
 [![Build Status](https://api.travis-ci.com/atmajs/alot.png?branch=master)](https://travis-ci.com/atmajs/alot)
 [![NPM version](https://badge.fury.io/js/alot.svg)](http://badge.fury.io/js/alot)
+![ts](https://badgen.net/badge/Built%20With/TypeScript/blue)
 
-
-**Lazy** and performance-optimized `Collection` methods
-
-* supports **async** handlers
-* with **typescript** definitions
-
+**🌱 Lazy**, **⛓️ Async** and ⚡ Performance-Optimized `Array/Stream` methods
 
 
 ```ts
 
 import alot from 'alot';
 
-const arr = [1,2,3, 4];
+const users: IUser[];
 
 // Sync
-const numbers = alot(arr)
-    .filter(x => x * 2)
+const userAgeGroups = alot(users)
+    .distinctBy(x => x.email)
+    .sortBy(x => x.createdAt)
+    .groupBy(x => x.age)
     .skip(1)
     .take(2)
     .toArray();
 
 // Async
-const users = await alot(arr)
-    .mapAsync(async id => UserService.loadById(id))
+const userData = await alot(users)
+    .mapAsync(async user => UserService.loadFooMeta(user.id))
     .toArrayAsync({ threads: 4 });
 
 ```

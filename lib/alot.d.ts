@@ -65,6 +65,7 @@ declare module 'alot/AlotProto' {
             constructor(stream: IAlotStream<TSource>, opts?: AlotStreamOpts);
             next(): AlotStreamIterationResult<T>;
             nextAsync(): Promise<AlotStreamIterationResult<T>>;
+            [Symbol.iterator](): this;
             /**
                 * Resets current stream to the beginning.
                 */
