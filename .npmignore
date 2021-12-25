@@ -8,8 +8,9 @@
 .npmignore
 
 .travis.yml
+tsconfig-build.json
+tsconfig-typedoc.json
 
-build.js
 node_modules/
 tools/
 test/
@@ -17,3 +18,9 @@ src/
 builds/
 examples/
 ts-temp/
+assets/
+docs/
+
+.vscode/
+typings/
+typings-other/

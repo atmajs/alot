@@ -6,7 +6,7 @@
 
 ----
 
-[![Build Status](https://api.travis-ci.com/atmajs/alot.png?branch=master)](https://travis-ci.com/atmajs/alot)
+[![Build Status](https://api.travis-ci.com/atmajs/alot.png?branch=master)](https://app.travis-ci.com/github/atmajs/alot)
 [![NPM version](https://badge.fury.io/js/alot.svg)](http://badge.fury.io/js/alot)
 ![ts](https://badgen.net/badge/Built%20With/TypeScript/blue)
 
@@ -36,7 +36,7 @@ const userData = await alot(users)
 ```
 
 ----
-[📚 API Documentation](https://docs.atma.dev/alot)
+[📚 API Documentation 🔗](https://docs.atma.dev/alot/classes/Alot.html)
 ----
 
 Methods overview:

@@ -5,7 +5,7 @@
         "name": "Alexander Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.2.93",
+    "version": "0.2.94",
     "main": "./lib/alot.js",
     "types": "./lib/alot.d.ts",
     "repository": {
