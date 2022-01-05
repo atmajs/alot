@@ -24,13 +24,17 @@ export class SkipStream<T> extends AlotProto<T> {
     }
 }
 
+export interface TSkipWhileMethodOpts {
+    //@TODO includeFirst?: boolean;
+}
+
 export interface SkipWhileMethod<T> {
     (x: T, i?: number): boolean
 }
 export class SkipWhileStream<T> extends AlotProto<T> {
     private _skipped = false;
 
-    constructor(public stream: IAlotStream<T>, public fn: SkipWhileMethod<T>) {
+    constructor(public stream: IAlotStream<T>, public fn: SkipWhileMethod<T>, public opts?: TSkipWhileMethodOpts) {
         super(stream);
     }
     next() {
@@ -39,7 +43,8 @@ export class SkipWhileStream<T> extends AlotProto<T> {
             if (result.done) {
                 return result;
             }
-            if (this.fn(result.value, result.index)) {
+            let b = this.fn(result.value, result.index);
+            if (Boolean(b) === true) {
                 continue;
             }
             this._skipped = true;
@@ -62,12 +67,12 @@ export class SkipWhileStreamAsync<T> extends AlotProto<T> {
 
     private _skipped = false;
 
-    constructor(public stream: IAlotStream<T>, public fn: SkipWhileMethodAsync<T>) {
+    constructor(public stream: IAlotStream<T>, public fn: SkipWhileMethodAsync<T>, public opts?: TSkipWhileMethodOpts) {
         super(stream);
         this.next = this.nextAsync as any;
     }
 
-    // No matter how many streams do we have, ensure we call this no simultanously
+    // No matter how many streams do we have, ensure we call this not simultanously
     @Deco.queued()
     async nextAsync () {
         while (this._skipped === false) {

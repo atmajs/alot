@@ -19,7 +19,9 @@ export class TakeStream<T> extends AlotProto<T> {
         return super.reset();
     }
 }
-
+export interface TTakeWhileMethodOpts {
+    includeLast?: boolean;
+}
 export interface TakeWhileMethod <T> {
     (x: T, i?: number): boolean
 }
@@ -28,20 +30,24 @@ export interface TakeWhileMethodAsync <T> {
 }
 export class TakeWhileStream<T> extends AlotProto<T> {
     private _took = false;
-    constructor(public stream: IAlotStream<T>, public fn: TakeWhileMethod<T>) {
+    constructor(public stream: IAlotStream<T>, public fn: TakeWhileMethod<T>, public opts?: TTakeWhileMethodOpts) {
         super(stream);
     }
     next() {
         if (this._took === true) {
-            return { done: true, value: null };
+            return r_DONE;
         }
         let result = this.stream.next();
         if (result.done) {
             return result;
         }
-        if (this.fn(result.value, result.index) === false) {
+        let b = this.fn(result.value, result.index);
+        if (Boolean(b) === false) {
             this._took = true;
-            return this.next();
+            if (this.opts?.includeLast !== true) {
+                return r_DONE;
+            }
+            // otherwise will return current, and all other will be skipped
         }
         return result;
     }
@@ -56,7 +62,7 @@ export class TakeWhileStreamAsync<T> extends AlotProto<T> {
 
     private _took = false;
 
-    constructor(public stream: IAlotStream<T>, public fn: TakeWhileMethodAsync<T>) {
+    constructor(public stream: IAlotStream<T>, public fn: TakeWhileMethodAsync<T>, public opts?: TTakeWhileMethodOpts) {
         super(stream);
         this.next = this.nextAsync as any;
     }
@@ -73,7 +79,10 @@ export class TakeWhileStreamAsync<T> extends AlotProto<T> {
         let b = await this.fn(result.value, result.index);
         if (Boolean(b) === false) {
             this._took = true;
-            return r_DONE;
+            if (this.opts?.includeLast !== true) {
+                return r_DONE;
+            }
+            // otherwise will return current, and all other will be skipped
         }
         return result;
     }

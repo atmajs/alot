@@ -3,13 +3,18 @@ import sinon = require('sinon');
 
 UTest({
     'takeWhile' () {
-        let arr = [1, 2, 3];
+        let arr = [1, 2, 3, 4, 5, 6];
         let alot = new Alot(arr);
+        let subArr = alot.takeWhile(x => x < 3).toArray();
+        deepEq_(subArr, [1, 2]);
 
-        deepEq_(alot.takeWhile(x => x < 3).toArray(), [1, 2]);
+        '> include last'
+        alot = new Alot(arr);
+        subArr = alot.takeWhile(x => x < 3, { includeLast: true }).toArray();
+        deepEq_(subArr, [1, 2, 3]);
     },
     async 'takeWhileAsync' () {
-        let arr = [1, 2, 3, 4];
+        let arr = [1, 2, 3, 4, 5];
         let alot = new Alot(arr);
 
         let callCount = 0;
@@ -23,6 +28,17 @@ UTest({
 
         deepEq_(result, [2, 4]);
         eq_(callCount, 3, `Stream should be interrupted when x < 6 occures`);
+
+        '> include last'
+        result = await new Alot(arr)
+            .mapAsync(x => {
+                callCount++;
+                return Promise.resolve(x * 2)
+            })
+            .takeWhileAsync(async x => x < 6, { includeLast: true })
+            .toArrayAsync();
+
+        deepEq_(result, [2, 4, 6]);
     },
 
     'skipWhile' () {
@@ -63,5 +79,5 @@ UTest({
 
         deepEq_(result, [4, 6, 8]);
         eq_(callCount, arr.length - 1);
-    },
+    }
 })

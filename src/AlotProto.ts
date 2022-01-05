@@ -37,6 +37,8 @@ import {
 } from './streams/exports';
 import { is_Promise } from './utils/is';
 import { ParametersFromSecond } from './utils/types';
+import { type TTakeWhileMethodOpts } from './streams/TakeStream';
+import { type TSkipWhileMethodOpts } from './streams/SkipStream';
 
 export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     isAsync = false;
@@ -99,20 +101,20 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     take(count: number) {
         return new TakeStream(this, count);
     }
-    takeWhile(fn: TakeWhileMethod<T>) {
-        return new TakeWhileStream(this, fn);
+    takeWhile(fn: TakeWhileMethod<T>, opts?: TTakeWhileMethodOpts) {
+        return new TakeWhileStream(this, fn, opts);
     }
-    takeWhileAsync(fn: TakeWhileMethodAsync<T>) {
-        return new TakeWhileStreamAsync(this, fn);
+    takeWhileAsync(fn: TakeWhileMethodAsync<T>, opts?: TTakeWhileMethodOpts) {
+        return new TakeWhileStreamAsync(this, fn, opts);
     }
     skip(count: number) {
         return new SkipStream(this, count);
     }
-    skipWhile(fn: SkipWhileMethod<T>) {
-        return new SkipWhileStream(this, fn);
+    skipWhile(fn: SkipWhileMethod<T>, opts?: TSkipWhileMethodOpts) {
+        return new SkipWhileStream(this, fn, opts);
     }
-    skipWhileAsync(fn: SkipWhileMethodAsync<T>) {
-        return new SkipWhileStreamAsync(this, fn);
+    skipWhileAsync(fn: SkipWhileMethodAsync<T>, opts?: TSkipWhileMethodOpts) {
+        return new SkipWhileStreamAsync(this, fn, opts);
     }
     groupBy<TKey = string>(fn: GroupByKeyFn<T, TKey>) {
         return new GroupByStream<T, TKey>(this, fn);

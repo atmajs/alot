@@ -59,6 +59,8 @@ declare module 'alot/AlotProto' {
     /** Loading all stream from extra exports file to fix circular dependencies */
     import { IAlotStream, AlotStreamIterationResult, GroupByKeyFn, GroupByStream, DistinctByKeyFn, DistinctByStream, SkipStream, SkipWhileMethod, SkipWhileStream, SkipWhileMethodAsync, SkipWhileStreamAsync, TakeStream, TakeWhileStream, TakeWhileStreamAsync, TakeWhileMethod, TakeWhileMethodAsync, MapStream, MapManyStream, MethodMap, MethodMapMany, FilterStream, FilterStreamAsync, ForEachStream, ForEachMethod, SortByStream, SortByLocalCompareStream, SortMethod, JoinStream } from 'alot/streams/exports';
     import { ParametersFromSecond } from 'alot/utils/types';
+    import { type TTakeWhileMethodOpts } from 'alot/streams/TakeStream';
+    import { type TSkipWhileMethodOpts } from 'alot/streams/SkipStream';
     export class AlotProto<T, TSource = T> implements IAlotStream<T> {
             stream: IAlotStream<TSource>;
             isAsync: boolean;
@@ -89,11 +91,11 @@ declare module 'alot/AlotProto' {
             forEach(fn: ForEachMethod<T>): ForEachStream<T>;
             forEachAsync<TResult>(fn: ForEachMethod<T>): ForEachStream<T>;
             take(count: number): TakeStream<T>;
-            takeWhile(fn: TakeWhileMethod<T>): TakeWhileStream<T>;
-            takeWhileAsync(fn: TakeWhileMethodAsync<T>): TakeWhileStreamAsync<T>;
+            takeWhile(fn: TakeWhileMethod<T>, opts?: TTakeWhileMethodOpts): TakeWhileStream<T>;
+            takeWhileAsync(fn: TakeWhileMethodAsync<T>, opts?: TTakeWhileMethodOpts): TakeWhileStreamAsync<T>;
             skip(count: number): SkipStream<T>;
-            skipWhile(fn: SkipWhileMethod<T>): SkipWhileStream<T>;
-            skipWhileAsync(fn: SkipWhileMethodAsync<T>): SkipWhileStreamAsync<T>;
+            skipWhile(fn: SkipWhileMethod<T>, opts?: TSkipWhileMethodOpts): SkipWhileStream<T>;
+            skipWhileAsync(fn: SkipWhileMethodAsync<T>, opts?: TSkipWhileMethodOpts): SkipWhileStreamAsync<T>;
             groupBy<TKey = string>(fn: GroupByKeyFn<T, TKey>): GroupByStream<T, TKey>;
             /** Join Left Inner  */
             join<TInner = T, TResult = T>(inner: TInner[], getKey: (x: T) => string | number, getForeignKey: (x: TInner) => string | number, joinFn: (a: T, b: TInner) => TResult): JoinStream<T, TInner, TResult>;
@@ -192,6 +194,89 @@ declare module 'alot/utils/types' {
     export type ParametersFromSecond<T extends (x: any, ...args: any) => any> = T extends (x: any, ...args: infer P) => any ? P : never;
 }
 
+declare module 'alot/streams/TakeStream' {
+    import { AlotStreamIterationResult } from 'alot/streams/IAlotStream'; 
+     import { IAlotStream } from 'alot/streams/IAlotStream';
+    import { AlotProto } from "alot/AlotProto";
+    export class TakeStream<T> extends AlotProto<T> {
+            stream: IAlotStream<T>;
+            _count: number;
+            constructor(stream: IAlotStream<T>, _count: number);
+            next(): AlotStreamIterationResult<T>;
+            reset(): this;
+    }
+    export interface TTakeWhileMethodOpts {
+            includeLast?: boolean;
+    }
+    export interface TakeWhileMethod<T> {
+            (x: T, i?: number): boolean;
+    }
+    export interface TakeWhileMethodAsync<T> {
+            (x: T, i?: number): boolean | Promise<boolean>;
+    }
+    export class TakeWhileStream<T> extends AlotProto<T> {
+            stream: IAlotStream<T>;
+            fn: TakeWhileMethod<T>;
+            opts?: TTakeWhileMethodOpts;
+            constructor(stream: IAlotStream<T>, fn: TakeWhileMethod<T>, opts?: TTakeWhileMethodOpts);
+            next(): {
+                    done: boolean;
+                    value: any;
+            };
+            reset(): this;
+    }
+    export class TakeWhileStreamAsync<T> extends AlotProto<T> {
+            stream: IAlotStream<T>;
+            fn: TakeWhileMethodAsync<T>;
+            opts?: TTakeWhileMethodOpts;
+            isAsync: boolean;
+            constructor(stream: IAlotStream<T>, fn: TakeWhileMethodAsync<T>, opts?: TTakeWhileMethodOpts);
+            nextAsync(): Promise<{
+                    done: boolean;
+                    value: any;
+            }>;
+            reset(): this;
+    }
+}
+
+declare module 'alot/streams/SkipStream' {
+    import { AlotStreamIterationResult } from 'alot/streams/IAlotStream'; 
+     import { IAlotStream } from "alot/streams/IAlotStream";
+    import { AlotProto } from "alot/AlotProto";
+    export class SkipStream<T> extends AlotProto<T> {
+            stream: IAlotStream<T>;
+            _count: number;
+            constructor(stream: IAlotStream<T>, _count: number);
+            next(): AlotStreamIterationResult<T>;
+            reset(): this;
+    }
+    export interface TSkipWhileMethodOpts {
+    }
+    export interface SkipWhileMethod<T> {
+            (x: T, i?: number): boolean;
+    }
+    export class SkipWhileStream<T> extends AlotProto<T> {
+            stream: IAlotStream<T>;
+            fn: SkipWhileMethod<T>;
+            opts?: TSkipWhileMethodOpts;
+            constructor(stream: IAlotStream<T>, fn: SkipWhileMethod<T>, opts?: TSkipWhileMethodOpts);
+            next(): AlotStreamIterationResult<T>;
+            reset(): this;
+    }
+    export interface SkipWhileMethodAsync<T> {
+            (x: T, i?: number): boolean | Promise<boolean>;
+    }
+    export class SkipWhileStreamAsync<T> extends AlotProto<T> {
+            stream: IAlotStream<T>;
+            fn: SkipWhileMethodAsync<T>;
+            opts?: TSkipWhileMethodOpts;
+            isAsync: boolean;
+            constructor(stream: IAlotStream<T>, fn: SkipWhileMethodAsync<T>, opts?: TSkipWhileMethodOpts);
+            nextAsync(): Promise<AlotStreamIterationResult<T>>;
+            reset(): this;
+    }
+}
+
 declare module 'alot/streams/FilterStream' {
     import { AlotStreamIterationResult } from 'alot/streams/IAlotStream'; 
      import { IAlotStream } from "alot/streams/IAlotStream";
@@ -241,77 +326,6 @@ declare module 'alot/streams/MapStream' {
         next(): any;
         nextAsync(): any;
         reset(): this;
-    }
-}
-
-declare module 'alot/streams/TakeStream' {
-    import { AlotStreamIterationResult } from 'alot/streams/IAlotStream'; 
-     import { IAlotStream } from 'alot/streams/IAlotStream';
-    import { AlotProto } from "alot/AlotProto";
-    export class TakeStream<T> extends AlotProto<T> {
-            stream: IAlotStream<T>;
-            _count: number;
-            constructor(stream: IAlotStream<T>, _count: number);
-            next(): AlotStreamIterationResult<T>;
-            reset(): this;
-    }
-    export interface TakeWhileMethod<T> {
-            (x: T, i?: number): boolean;
-    }
-    export interface TakeWhileMethodAsync<T> {
-            (x: T, i?: number): boolean | Promise<boolean>;
-    }
-    export class TakeWhileStream<T> extends AlotProto<T> {
-            stream: IAlotStream<T>;
-            fn: TakeWhileMethod<T>;
-            constructor(stream: IAlotStream<T>, fn: TakeWhileMethod<T>);
-            next(): any;
-            reset(): this;
-    }
-    export class TakeWhileStreamAsync<T> extends AlotProto<T> {
-            stream: IAlotStream<T>;
-            fn: TakeWhileMethodAsync<T>;
-            isAsync: boolean;
-            constructor(stream: IAlotStream<T>, fn: TakeWhileMethodAsync<T>);
-            nextAsync(): Promise<{
-                    done: boolean;
-                    value: any;
-            }>;
-            reset(): this;
-    }
-}
-
-declare module 'alot/streams/SkipStream' {
-    import { AlotStreamIterationResult } from 'alot/streams/IAlotStream'; 
-     import { IAlotStream } from "alot/streams/IAlotStream";
-    import { AlotProto } from "alot/AlotProto";
-    export class SkipStream<T> extends AlotProto<T> {
-            stream: IAlotStream<T>;
-            _count: number;
-            constructor(stream: IAlotStream<T>, _count: number);
-            next(): AlotStreamIterationResult<T>;
-            reset(): this;
-    }
-    export interface SkipWhileMethod<T> {
-            (x: T, i?: number): boolean;
-    }
-    export class SkipWhileStream<T> extends AlotProto<T> {
-            stream: IAlotStream<T>;
-            fn: SkipWhileMethod<T>;
-            constructor(stream: IAlotStream<T>, fn: SkipWhileMethod<T>);
-            next(): AlotStreamIterationResult<T>;
-            reset(): this;
-    }
-    export interface SkipWhileMethodAsync<T> {
-            (x: T, i?: number): boolean | Promise<boolean>;
-    }
-    export class SkipWhileStreamAsync<T> extends AlotProto<T> {
-            stream: IAlotStream<T>;
-            fn: SkipWhileMethodAsync<T>;
-            isAsync: boolean;
-            constructor(stream: IAlotStream<T>, fn: SkipWhileMethodAsync<T>);
-            nextAsync(): Promise<AlotStreamIterationResult<T>>;
-            reset(): this;
     }
 }
 
