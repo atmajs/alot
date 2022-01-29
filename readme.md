@@ -231,7 +231,7 @@ alot.fromObject(foo: any): Alot<{ key: string, value: string }>
 alot.fromRange(start: number, endExcluded: number): Alot<number>
 ```
 
-`fromWeb`
+`fromWeb2`
 
 ----
 _Atma.js Project_
