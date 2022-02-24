@@ -18,9 +18,20 @@ export class Alot<T = any> extends AlotProto<T> {
     }
 
     static fromRange(start: number, endExcluded: number) {
-        let arr = new Array(endExcluded - start);
-        for (let i = start; i < endExcluded; i++) {
-            arr[i - start] = i;
+        let size = Math.abs(endExcluded - start);
+        let arr = new Array(size);
+        if (start <= endExcluded) {
+            let min = start;
+            let max = endExcluded;
+            for (let i = min; i < max; i++) {
+                arr[i - min] = i;
+            }
+        } else {
+            let min = endExcluded;
+            let max = start;
+            for (let i = max; i > min; i--) {
+                arr[max - i] = i;
+            }
         }
         return new Alot(arr);
     }

@@ -182,7 +182,7 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     async toDictionaryAsync<TKey = string, TValue = any>(
         keyFn: (x: T) => Promise<TKey> | TKey,
         valFn?: (x: T) => Promise<TValue> | TValue
-    ): Promise<{ [key: string]: T }> {
+    ): Promise<{ [key: string]: TValue }> {
         this.reset();
         let hash = Object.create(null);
         while (true) {

@@ -231,5 +231,7 @@ alot.fromObject(foo: any): Alot<{ key: string, value: string }>
 alot.fromRange(start: number, endExcluded: number): Alot<number>
 ```
 
+Supports ascending, e.g.`[-1..10)`, and descending ranges - `[10..-1)`
+
 ----
 _Atma.js Project_
