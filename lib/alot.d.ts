@@ -113,7 +113,7 @@ declare module 'alot/AlotProto' {
                     [key: string]: TValue;
             };
             toDictionaryAsync<TKey = string, TValue = any>(keyFn: (x: T) => Promise<TKey> | TKey, valFn?: (x: T) => Promise<TValue> | TValue): Promise<{
-                    [key: string]: T;
+                    [key: string]: TValue;
             }>;
             toMap<TKey = string, TValue = any>(keyFn: (x: T) => TKey, valFn?: (x: T) => TValue): Map<TKey, TValue>;
             toMapAsync<TKey = string, TValue = any>(keyFn: (x: T) => Promise<TKey> | TKey, valFn?: (x: T) => Promise<TValue> | TValue): Promise<Map<TKey, TValue>>;
