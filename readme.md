@@ -36,7 +36,8 @@ const userData = await alot(users)
 ```
 
 ----
-[📚 API Documentation 🔗](https://docs.atma.dev/alot/classes/Alot.html)
+- [📝 Blog Post 🔗](https://dev.kit.eco/alot-turns-your-arrays-into-lazy-and-async-streams)
+- [📚 API Documentation 🔗](https://docs.atma.dev/alot/classes/Alot.html)
 ----
 
 Methods overview:
