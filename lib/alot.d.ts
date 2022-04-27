@@ -282,7 +282,6 @@ declare module 'alot/streams/FilterStream' {
      import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
     import { MethodFilter } from 'alot/Methods';
-    import { AlotMetaAsync } from 'alot/AlotMeta';
     export class FilterStream<T> extends AlotProto<T> {
             stream: IAlotStream<T>;
             fn: MethodFilter<T>;
@@ -296,7 +295,6 @@ declare module 'alot/streams/FilterStream' {
             constructor(stream: IAlotStream<T>, fn: MethodFilter<T>);
             nextAsync(): Promise<AlotStreamIterationResult<T>>;
             reset(): this;
-            toArrayAsync(meta?: AlotMetaAsync): Promise<T[]>;
     }
 }
 

@@ -50,22 +50,8 @@ export class FilterStreamAsync<T> extends AlotProto<T> {
             return result;
         }
     }
-
     reset () {
         this._index = -1;
         return super.reset();
-    }
-
-    async toArrayAsync (meta: AlotMetaAsync = { threads: 4 }): Promise<T[]> {
-        this.reset();
-        let arr = await this.mapAsync(async (item, i) => {
-            let flag = await this.fn(item, i)
-            return {
-                value: item,
-                flag
-            }
-        }, meta).toArrayAsync();
-
-        return arr.filter(x => x.flag).map(x => x.value);
     }
 }

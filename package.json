@@ -2,10 +2,10 @@
     "name": "alot",
     "description": "Collection methods with sync and async features",
     "author": {
-        "name": "Alexander Kit",
+        "name": "Alex Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.2.99",
+    "version": "0.3.0",
     "main": "./lib/alot.js",
     "types": "./lib/alot.d.ts",
     "repository": {
@@ -15,15 +15,15 @@
     "devDependencies": {
         "@types/node": "^12.12.6",
         "@types/sinon": "^2.3.3",
-        "app-bundler": "^0.1.2",
-        "atma": "^0.15.8",
-        "atma-loader-ts": "^1.1.17",
+        "app-bundler": "^0.1.5",
+        "atma": "^0.15.15",
+        "atma-loader-ts": "^1.1.18",
         "dts-bundle": "^0.7.3",
         "typedoc": "^0.21.4",
         "typescript": "^4.5.4"
     },
     "scripts": {
-        "test": "atma test",
+        "test": "atma test --TEST",
         "build": "npm run build-bundle && npm run build-dts && npm run build-typedoc",
         "build-bundle": "app-bundler",
         "build-dts": "tsc -v && tsc -p tsconfig-build.json && atma run tools/build-dts",

@@ -11,9 +11,15 @@ UTest({
     async 'filterAsync' () {
         let arr = [1, 2, 3];
         let alot = new Alot(arr);
-
-        let result = await alot.filterAsync(async x => x > 1).toArrayAsync();
+        let callCount = 0;
+        let result = await alot
+            .filterAsync(async x => {
+                callCount++;
+                return x > 1;
+            })
+            .toArrayAsync();
         deepEq_(result, [2, 3]);
+        eq_(callCount, arr.length);
     },
     'filter and take first: ensure is lazy' () {
         let arr = [
@@ -76,7 +82,7 @@ UTest({
         deepEq_(result, [2,3]);
     },
 
-    'filter async -> skip -> take': {
+    'filter async - skip - take': {
         'sync' () {
             let arr = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
             let alot = new Alot(arr);
