@@ -113,24 +113,45 @@ groupBy <T, TKey = string > (fn: (x: T) => TKey): IAlotStream< { key: TKey[], va
 
 
 
-### `join` , `joinOuter`
+### `join`
+
+> Join elements from collection `Inner` and collection `Outer` by the matched `Key`. Elements with **no** matches are **skipped**.
 
 ```ts
 // Inner Left Join
-join <TInner, TResult> (
+join <TOuter, TResult> (
     inner: TInner[],
-    getKey: (x: T) => string | number,
+    getKeyOuter: (x: TOuter) => string | number,
+    getKeyInner: (x: TInner) => string | number,
+    joinFn: (a: TOuter, b: TInner) => TResult
+): IAlotStream< TResult >
+```
+
+### `joinOuter`
+
+> Join elements from collection `Inner` and collection `Outer` by the matched `Key`. Elements with **no** matches are **included** as is.
+
+```ts
+// Outer Full Join
+joinOuter <TOuter, TResult> (
+    inner: TInner[],
+    getKey: (x: TOuter) => string | number,
     getForeignKey: (x: TInner) => string | number,
-    joinFn: (a: T, b: TInner) => TResult
+    joinFn: (a?: TOuter, b?: TInner) => TResult
 ): IAlotStream< TResult >
 
+```
+
+
+### `concat`
+
+> Same as `Array::concat`
+
+```ts
 // Outer Full Join
-joinOuter <TInner, TResult> (
-    inner: TInner[],
-    getKey: (x: T) => string | number,
-    getForeignKey: (x: TInner) => string | number,
-    joinFn: (a: T, b: TInner) => TResult
-): IAlotStream< TResult >
+concat <TSource> (
+    other: TOther[],
+): IAlotStream< (TSource | TOther) >
 
 ```
 

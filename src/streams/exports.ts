@@ -21,3 +21,4 @@ export { ForEachStream, ForEachMethod } from './ForEachStream';
 export { ForkStreamInner, ForkStreamOuter } from './ForkStream';
 export { SortByStream, SortMethod, SortByLocalCompareStream } from './SortedStream';
 export { JoinStream } from './JoinStream';
+export { ConcatStream } from './ConcatStream'

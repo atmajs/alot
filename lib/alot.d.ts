@@ -57,7 +57,7 @@ declare module 'alot/AlotProto' {
     import { AlotMeta, AlotMetaAsync, AlotStreamOpts } from 'alot/AlotMeta';
     import { TAggregateNumeric } from 'alot/utils/Aggregation';
     /** Loading all stream from extra exports file to fix circular dependencies */
-    import { IAlotStream, AlotStreamIterationResult, GroupByKeyFn, GroupByStream, DistinctByKeyFn, DistinctByStream, SkipStream, SkipWhileMethod, SkipWhileStream, SkipWhileMethodAsync, SkipWhileStreamAsync, TakeStream, TakeWhileStream, TakeWhileStreamAsync, TakeWhileMethod, TakeWhileMethodAsync, MapStream, MapManyStream, MethodMap, MethodMapMany, FilterStream, FilterStreamAsync, ForEachStream, ForEachMethod, SortByStream, SortByLocalCompareStream, SortMethod, JoinStream } from 'alot/streams/exports';
+    import { IAlotStream, AlotStreamIterationResult, GroupByKeyFn, GroupByStream, DistinctByKeyFn, DistinctByStream, SkipStream, SkipWhileMethod, SkipWhileStream, SkipWhileMethodAsync, SkipWhileStreamAsync, TakeStream, TakeWhileStream, TakeWhileStreamAsync, TakeWhileMethod, TakeWhileMethodAsync, MapStream, MapManyStream, MethodMap, MethodMapMany, FilterStream, FilterStreamAsync, ForEachStream, ForEachMethod, SortByStream, SortByLocalCompareStream, SortMethod, JoinStream, ConcatStream } from 'alot/streams/exports';
     import { ParametersFromSecond } from 'alot/utils/types';
     import { type TTakeWhileMethodOpts } from 'alot/streams/TakeStream';
     import { type TSkipWhileMethodOpts } from 'alot/streams/SkipStream';
@@ -101,6 +101,7 @@ declare module 'alot/AlotProto' {
             join<TInner = T, TResult = T>(inner: TInner[], getKey: (x: T) => string | number, getForeignKey: (x: TInner) => string | number, joinFn: (a: T, b: TInner) => TResult): JoinStream<T, TInner, TResult>;
             /** Join Full Outer  */
             joinOuter<TInner = T, TResult = T>(inner: TInner[], getKey: (x: T) => string | number, getForeignKey: (x: TInner) => string | number, joinFn: (a?: T, b?: TInner) => TResult): JoinStream<T, TInner, TResult>;
+            concat<TSourceB>(arr: TSourceB[]): ConcatStream<T, TSourceB>;
             distinctBy(fn: DistinctByKeyFn<T>): DistinctByStream<T, string | number>;
             distinct(): DistinctByStream<T, string | number>;
             sortBy(sortByFn: SortMethod<T>, direction?: 'asc' | 'desc'): SortByStream<T>;
@@ -188,6 +189,7 @@ declare module 'alot/streams/exports' {
     export { ForkStreamInner, ForkStreamOuter } from 'alot/streams/ForkStream';
     export { SortByStream, SortMethod, SortByLocalCompareStream } from 'alot/streams/SortedStream';
     export { JoinStream } from 'alot/streams/JoinStream';
+    export { ConcatStream } from 'alot/streams/ConcatStream';
 }
 
 declare module 'alot/utils/types' {
@@ -459,16 +461,19 @@ declare module 'alot/streams/JoinStream' {
         nextAsync(): Promise<any>;
         reset(): this;
     }
-    export interface MethodMapMany<T, TResult> {
-        (x: T, i?: number): TResult[] | PromiseLike<TResult[]>;
-    }
-    export class MapManyStream<T, TResult> extends AlotProto<TResult, T> {
-        stream: IAlotStream<T>;
-        fn: MethodMapMany<T, TResult>;
-        opts?: AlotStreamOpts;
-        constructor(stream: IAlotStream<T>, fn: MethodMapMany<T, TResult>, opts?: AlotStreamOpts);
-        next(): any;
-        nextAsync(): any;
+}
+
+declare module 'alot/streams/ConcatStream' {
+    import { IAlotStream } from 'alot/streams/IAlotStream';
+    import { AlotProto } from "alot/AlotProto";
+    export class ConcatStream<TSource, TSourceB> extends AlotProto<(TSource | TSourceB), TSource> {
+        stream: IAlotStream<TSource>;
+        sourceB: Array<TSourceB>;
+        constructor(stream: IAlotStream<TSource>, sourceB: Array<TSourceB>);
+        next(): {
+            done: boolean;
+            value: any;
+        };
         reset(): this;
     }
 }

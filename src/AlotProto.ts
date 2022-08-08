@@ -33,7 +33,8 @@ import {
     SortByStream,
     SortByLocalCompareStream,
     SortMethod,
-    JoinStream
+    JoinStream,
+    ConcatStream,
 } from './streams/exports';
 import { is_Promise } from './utils/is';
 import { ParametersFromSecond } from './utils/types';
@@ -136,6 +137,11 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
         joinFn: (a?: T, b?: TInner) => TResult,
         ) {
         return new JoinStream(this, inner, getKey, getForeignKey, joinFn, 'outer');
+    }
+
+    concat <TSourceB> (arr: TSourceB[]) {
+        let stream = new ConcatStream(this, arr);
+        return stream;
     }
 
     distinctBy(fn: DistinctByKeyFn<T>) {
