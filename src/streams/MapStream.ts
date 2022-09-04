@@ -3,9 +3,7 @@ import { AlotProto } from "../AlotProto";
 import { AlotStreamOpts } from '../AlotMeta';
 import { r_DONE } from '../utils/r';
 
-export interface MethodMap<T, TResult> {
-    (x: T, i?: number): TResult | PromiseLike<TResult>
-}
+export type MethodMap<T, TResult> = (x: T, i?: number) => TResult | PromiseLike<TResult>
 export class MapStream<TSource, TResult> extends AlotProto<TResult, TSource> {
     private _index = 0;
     constructor(public stream: IAlotStream<TSource>, public fn: MethodMap<TSource, TResult>, opts?: AlotStreamOpts) {
@@ -44,9 +42,7 @@ export class MapStream<TSource, TResult> extends AlotProto<TResult, TSource> {
 }
 
 
-export interface MethodMapMany<T, TResult> {
-    (x: T, i?: number): TResult[] | PromiseLike<TResult[]>
-}
+export type MethodMapMany<T, TResult> = (x: T, i?: number) => TResult[] | PromiseLike<TResult[]>;
 export class MapManyStream<T, TResult> extends AlotProto<TResult, T> {
     private _index = -1;
     private _many: TResult[] = null

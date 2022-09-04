@@ -3,9 +3,7 @@ import { AlotProto } from "../AlotProto";
 import { AlotStreamOpts } from '../AlotMeta';
 
 
-export interface ForEachMethod<T> {
-    (x: T, i?: number): void | any | never
-}
+export type ForEachMethod<T> = (x: T, i?: number) => void | any | never;
 
 export class ForEachStream<T> extends AlotProto<T> {
     private _index: number = 0;

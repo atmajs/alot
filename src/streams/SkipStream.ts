@@ -28,9 +28,7 @@ export interface TSkipWhileMethodOpts {
     //@TODO includeFirst?: boolean;
 }
 
-export interface SkipWhileMethod<T> {
-    (x: T, i?: number): boolean
-}
+export type SkipWhileMethod<T> = (x: T, i?: number) => boolean
 export class SkipWhileStream<T> extends AlotProto<T> {
     private _skipped = false;
 
@@ -59,9 +57,7 @@ export class SkipWhileStream<T> extends AlotProto<T> {
 }
 
 
-export interface SkipWhileMethodAsync<T> {
-    (x: T, i?: number): boolean | Promise<boolean>
-}
+export type SkipWhileMethodAsync<T> = (x: T, i?: number) => boolean | Promise<boolean>;
 export class SkipWhileStreamAsync<T> extends AlotProto<T> {
     isAsync = true;
 

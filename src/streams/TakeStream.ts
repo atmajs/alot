@@ -22,12 +22,8 @@ export class TakeStream<T> extends AlotProto<T> {
 export interface TTakeWhileMethodOpts {
     includeLast?: boolean;
 }
-export interface TakeWhileMethod <T> {
-    (x: T, i?: number): boolean
-}
-export interface TakeWhileMethodAsync <T> {
-    (x: T, i?: number): boolean | Promise<boolean>
-}
+export type TakeWhileMethod <T> = (x: T, i?: number) => boolean
+export type TakeWhileMethodAsync <T> = (x: T, i?: number) => boolean | Promise<boolean>
 export class TakeWhileStream<T> extends AlotProto<T> {
     private _took = false;
     constructor(public stream: IAlotStream<T>, public fn: TakeWhileMethod<T>, public opts?: TTakeWhileMethodOpts) {

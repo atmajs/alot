@@ -3,12 +3,10 @@ import { AlotProto } from "../AlotProto";
 import { arr_last } from '../utils/arr';
 
 
-export interface ForkMethod <T> {
-    (x: IAlotStream<T>): void | any
-}
+export type ForkMethod <T> = (x: IAlotStream<T>) => void | any
 export class ForkStreamInner<T> extends AlotProto<T> {
     public _cached = [];
-    
+
     constructor(public stream: IAlotStream<T>, public fn: ForkMethod<T>) {
         super(stream);
     }

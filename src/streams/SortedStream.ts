@@ -6,9 +6,7 @@ import { r_DONE } from '../utils/r';
 import { Deco } from '../utils/deco';
 
 
-export interface SortMethod<T> {
-    (x: T, i?: number): string | number | bigint | { valueOf (): number | string }
-}
+export type SortMethod<T> = (x: T, i?: number) => string | number | bigint | { valueOf (): number | string };
 
 export class SortByStream<T> extends AlotProto<T> {
     isAsync = false;

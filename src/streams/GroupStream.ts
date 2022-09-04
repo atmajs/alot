@@ -2,9 +2,7 @@ import { IAlotStream } from "./IAlotStream";
 import { AlotProto } from "../AlotProto";
 
 
-export interface GroupByKeyFn<T, TKey = string> {
-    (x: T, i?: number): TKey
-}
+export type GroupByKeyFn<T, TKey = string> = (x: T, i?: number) => TKey
 interface IGroup<T, TKey = string> {
     key: TKey
     values: T[]
@@ -26,15 +24,15 @@ export class GroupByStream<TSource, TKey = string | number> extends AlotProto< I
                 return { done: true, value: null };
             }
 
-            return { 
-                done: false, 
+            return {
+                done: false,
                 index: this.index,
-                value: this.groups[this.index] 
+                value: this.groups[this.index]
             };
         }
         this.groups = [];
         this.hash = Object.create(null);
-        
+
         while (true) {
             let result = this.stream.next();
             if (result.done === true) {
@@ -45,9 +43,9 @@ export class GroupByStream<TSource, TKey = string | number> extends AlotProto< I
             let arr = this.hash[key];
             if (arr == null) {
                 arr = this.hash[key] = [];
-                this.groups.push({ 
-                    key: keyVal, 
-                    values: arr 
+                this.groups.push({
+                    key: keyVal,
+                    values: arr
                 });
             }
             arr.push(result.value);

@@ -2,9 +2,7 @@ import { IAlotStream } from "./IAlotStream";
 import { AlotProto } from "../AlotProto";
 
 
-export interface DistinctByKeyFn<T, TKey = string | number> {
-    (x: T, i?: number): TKey
-}
+export type DistinctByKeyFn<T, TKey = string | number> = (x: T, i?: number) => TKey
 
 export class DistinctByStream<T, TKey = string | number> extends AlotProto<T> {
     private _track = new Track;

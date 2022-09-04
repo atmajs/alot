@@ -155,9 +155,7 @@ declare module 'alot/streams/IAlotStream' {
 }
 
 declare module 'alot/Methods' {
-    export interface MethodFilter<T> {
-        (x: T, i?: number): boolean | Promise<boolean>;
-    }
+    export type MethodFilter<T> = (x: T, i?: number) => boolean | Promise<boolean>;
 }
 
 declare module 'alot/utils/Aggregation' {
@@ -210,12 +208,8 @@ declare module 'alot/streams/TakeStream' {
     export interface TTakeWhileMethodOpts {
             includeLast?: boolean;
     }
-    export interface TakeWhileMethod<T> {
-            (x: T, i?: number): boolean;
-    }
-    export interface TakeWhileMethodAsync<T> {
-            (x: T, i?: number): boolean | Promise<boolean>;
-    }
+    export type TakeWhileMethod<T> = (x: T, i?: number) => boolean;
+    export type TakeWhileMethodAsync<T> = (x: T, i?: number) => boolean | Promise<boolean>;
     export class TakeWhileStream<T> extends AlotProto<T> {
             stream: IAlotStream<T>;
             fn: TakeWhileMethod<T>;
@@ -254,9 +248,7 @@ declare module 'alot/streams/SkipStream' {
     }
     export interface TSkipWhileMethodOpts {
     }
-    export interface SkipWhileMethod<T> {
-            (x: T, i?: number): boolean;
-    }
+    export type SkipWhileMethod<T> = (x: T, i?: number) => boolean;
     export class SkipWhileStream<T> extends AlotProto<T> {
             stream: IAlotStream<T>;
             fn: SkipWhileMethod<T>;
@@ -265,9 +257,7 @@ declare module 'alot/streams/SkipStream' {
             next(): AlotStreamIterationResult<T>;
             reset(): this;
     }
-    export interface SkipWhileMethodAsync<T> {
-            (x: T, i?: number): boolean | Promise<boolean>;
-    }
+    export type SkipWhileMethodAsync<T> = (x: T, i?: number) => boolean | Promise<boolean>;
     export class SkipWhileStreamAsync<T> extends AlotProto<T> {
             stream: IAlotStream<T>;
             fn: SkipWhileMethodAsync<T>;
@@ -304,9 +294,7 @@ declare module 'alot/streams/MapStream' {
     import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
     import { AlotStreamOpts } from 'alot/AlotMeta';
-    export interface MethodMap<T, TResult> {
-        (x: T, i?: number): TResult | PromiseLike<TResult>;
-    }
+    export type MethodMap<T, TResult> = (x: T, i?: number) => TResult | PromiseLike<TResult>;
     export class MapStream<TSource, TResult> extends AlotProto<TResult, TSource> {
         stream: IAlotStream<TSource>;
         fn: MethodMap<TSource, TResult>;
@@ -315,9 +303,7 @@ declare module 'alot/streams/MapStream' {
         nextAsync(): Promise<any>;
         reset(): this;
     }
-    export interface MethodMapMany<T, TResult> {
-        (x: T, i?: number): TResult[] | PromiseLike<TResult[]>;
-    }
+    export type MethodMapMany<T, TResult> = (x: T, i?: number) => TResult[] | PromiseLike<TResult[]>;
     export class MapManyStream<T, TResult> extends AlotProto<TResult, T> {
         stream: IAlotStream<T>;
         fn: MethodMapMany<T, TResult>;
@@ -332,9 +318,7 @@ declare module 'alot/streams/MapStream' {
 declare module 'alot/streams/GroupStream' {
     import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
-    export interface GroupByKeyFn<T, TKey = string> {
-        (x: T, i?: number): TKey;
-    }
+    export type GroupByKeyFn<T, TKey = string> = (x: T, i?: number) => TKey;
     interface IGroup<T, TKey = string> {
         key: TKey;
         values: T[];
@@ -354,9 +338,7 @@ declare module 'alot/streams/DistinctStream' {
     import { AlotStreamIterationResult } from 'alot/streams/IAlotStream'; 
      import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
-    export interface DistinctByKeyFn<T, TKey = string | number> {
-            (x: T, i?: number): TKey;
-    }
+    export type DistinctByKeyFn<T, TKey = string | number> = (x: T, i?: number) => TKey;
     export class DistinctByStream<T, TKey = string | number> extends AlotProto<T> {
             stream: IAlotStream<T>;
             fn: DistinctByKeyFn<T, TKey>;
@@ -370,9 +352,7 @@ declare module 'alot/streams/ForEachStream' {
     import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
     import { AlotStreamOpts } from 'alot/AlotMeta';
-    export interface ForEachMethod<T> {
-        (x: T, i?: number): void | any | never;
-    }
+    export type ForEachMethod<T> = (x: T, i?: number) => void | any | never;
     export class ForEachStream<T> extends AlotProto<T> {
         stream: IAlotStream<T>;
         fn: ForEachMethod<T>;
@@ -386,9 +366,7 @@ declare module 'alot/streams/ForEachStream' {
 declare module 'alot/streams/ForkStream' {
     import { IAlotStream } from 'alot/streams/IAlotStream';
     import { AlotProto } from "alot/AlotProto";
-    export interface ForkMethod<T> {
-        (x: IAlotStream<T>): void | any;
-    }
+    export type ForkMethod<T> = (x: IAlotStream<T>) => void | any;
     export class ForkStreamInner<T> extends AlotProto<T> {
         stream: IAlotStream<T>;
         fn: ForkMethod<T>;
@@ -417,11 +395,9 @@ declare module 'alot/streams/SortedStream' {
     import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
     import { ParametersFromSecond } from 'alot/utils/types';
-    export interface SortMethod<T> {
-        (x: T, i?: number): string | number | bigint | {
-            valueOf(): number | string;
-        };
-    }
+    export type SortMethod<T> = (x: T, i?: number) => string | number | bigint | {
+        valueOf(): number | string;
+    };
     export class SortByStream<T> extends AlotProto<T> {
         stream: IAlotStream<T>;
         direction: 'asc' | 'desc';
