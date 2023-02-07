@@ -60,10 +60,10 @@ export class TakeWhileStreamAsync<T> extends AlotProto<T> {
 
     constructor(public stream: IAlotStream<T>, public fn: TakeWhileMethodAsync<T>, public opts?: TTakeWhileMethodOpts) {
         super(stream);
+        this.nextAsync = Deco.createQueuedMethod(this.nextAsync);
         this.next = this.nextAsync as any;
     }
 
-    @Deco.queued()
     async nextAsync () {
         if (this._took === true) {
             return r_DONE;

@@ -25,7 +25,7 @@ export class SortByStream<T> extends AlotProto<T> {
         } else {
             this.sortByFn = <any> mix;
         }
-
+        this.nextAsync = Deco.createQueuedMethod(this.nextAsync);
         this.isAsync = isAsync ?? this.stream.isAsync;
     }
     next() {
@@ -37,7 +37,6 @@ export class SortByStream<T> extends AlotProto<T> {
         return this.next();
     }
 
-    @Deco.queued()
     async nextAsync() {
         if (this.arr != null) {
             return Utils.next(++this.index, this.arr);

@@ -21,6 +21,63 @@ UTest({
         deepEq_(result, [2, 3]);
         eq_(callCount, arr.length);
     },
+    async 'filterAsync and take firstAsync' () {
+
+        // never resolve some to check if this doesn't block further loops
+        new Alot([1])
+            .mapAsync(x => new Promise(r => {}))
+            .toArrayAsync();
+
+        new Alot([1])
+            .filterAsync(x => new Promise(r => {}))
+            .toArrayAsync();
+
+        new Alot([1])
+            .mapAsync(x => Promise.resolve(2))
+            .filterAsync(x => new Promise(r => {}))
+            .firstAsync();
+
+        new Alot([1])
+            .mapAsync(x => Promise.resolve(2))
+            .filterAsync(x => x > 0)
+            .firstAsync(x => new Promise(r => {}));
+
+        let arr = [1, 2, 3]
+        let el = await new Alot(arr)
+            .mapAsync(x => Promise.resolve(x))
+            .filterAsync(x => typeof x === 'number')
+            .firstAsync(x => x > 1);
+        eq_(el, 2);
+
+        let noEl1 = await new Alot(arr)
+            .mapAsync(async x => await Promise.resolve(x))
+            .filterAsync(x => x > 5)
+            .firstAsync();
+
+        eq_(noEl1, null);
+
+        let noEl2 = await new Alot(arr)
+            .mapAsync(async x => await Promise.resolve(x))
+            .filterAsync(x => x > 5)
+            .firstAsync(x => x > 5);
+
+        eq_(noEl2, null);
+
+        let deepEls = await new Alot([ 2, 3, 4 ])
+            .mapAsync(async x => {
+
+                let arr = Alot.fromRange(0, x).toArray();
+
+                return new Alot(arr)
+                    .mapAsync(async x => await Promise.resolve(x % 2 === 0? [] : [x]))
+                    .filterAsync(x => x.length > 0)
+                    .firstAsync();
+            })
+            .toArrayAsync();
+
+
+        deepEq_(deepEls, [ [1], [1], [1] ]);
+    },
     'filter and take first: ensure is lazy' () {
         let arr = [
             {

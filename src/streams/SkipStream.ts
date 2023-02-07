@@ -65,11 +65,11 @@ export class SkipWhileStreamAsync<T> extends AlotProto<T> {
 
     constructor(public stream: IAlotStream<T>, public fn: SkipWhileMethodAsync<T>, public opts?: TSkipWhileMethodOpts) {
         super(stream);
+        // No matter how many streams do we have, ensure we call this not simultanously
+        this.nextAsync = Deco.createQueuedMethod(this.nextAsync);
         this.next = this.nextAsync as any;
     }
 
-    // No matter how many streams do we have, ensure we call this not simultanously
-    @Deco.queued()
     async nextAsync () {
         while (this._skipped === false) {
             let result = await this.stream.next();
@@ -86,6 +86,7 @@ export class SkipWhileStreamAsync<T> extends AlotProto<T> {
         }
         return this.stream.next();
     }
+
     reset() {
         this._skipped = false;
         return super.reset();

@@ -30,10 +30,10 @@ export class FilterStreamAsync<T> extends AlotProto<T> {
 
     constructor(public stream: IAlotStream<T>, public fn: MethodFilter<T>) {
         super(stream);
+        this.nextAsync = Deco.createQueuedMethod(this.nextAsync);
         this.next = this.nextAsync as any;
     }
 
-    @Deco.queued()
     async nextAsync () {
         let i = ++this._index;
 
