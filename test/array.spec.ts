@@ -130,6 +130,21 @@ UTest({
 
         deepEq_(result, [1,2,3,4]);
     },
+    async 'mapManyAsync throwing' () {
+        let arr = [ [1, 2], [3, 4]];
+        let alot = new Alot(arr);
+        let error;
+        try {
+            await alot
+                .mapManyAsync(async x => {
+                    throw new Error(`iError`)
+                })
+                .toArrayAsync();
+        } catch (err) {
+            error = err;
+        }
+        eq_(error?.message, 'iError');
+    },
 
     'skip and take' () {
         let arr = [ 1, 2, 3, 4 ];

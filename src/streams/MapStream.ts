@@ -51,10 +51,10 @@ export class MapManyStream<T, TResult> extends AlotProto<TResult, T> {
 
     constructor(public stream: IAlotStream<T>, public fn: MethodMapMany<T, TResult>, public opts?: AlotStreamOpts) {
         super(stream);
-        this.isAsync = stream.isAsync || opts && opts.async;
+        this.isAsync = stream.isAsync ?? opts?.async;
     }
     next () {
-        if (this.opts != null && this.opts.async) {
+        if (this.isAsync) {
             return this.nextAsync();
         }
         if (this._many != null && this._index < this._many.length - 1) {
@@ -101,9 +101,15 @@ export class MapManyStream<T, TResult> extends AlotProto<TResult, T> {
                 resolve(null);
                 return;
             }
-            this._many = await this.fn(result.value, result.index);
-            this._index = -1;
-            this._mapDfr = null;
+            try {
+                this._many = await this.fn(result.value, result.index);
+            } catch (error) {
+                reject(error);
+                return;
+            } finally {
+                this._index = -1;
+                this._mapDfr = null;
+            }
             resolve(null);
         });
     }
