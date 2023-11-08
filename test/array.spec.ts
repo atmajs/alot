@@ -9,17 +9,39 @@ UTest({
         deepEq_(alot.filter(x => x > 1).toArray(), [2, 3]);
     },
     async 'filterAsync' () {
-        let arr = [1, 2, 3];
-        let alot = new Alot(arr);
-        let callCount = 0;
-        let result = await alot
-            .filterAsync(async x => {
-                callCount++;
-                return x > 1;
-            })
-            .toArrayAsync();
-        deepEq_(result, [2, 3]);
-        eq_(callCount, arr.length);
+        return UTest({
+            async 'async filter method' () {
+                let arr = [1, 2, 3];
+                let alot = new Alot(arr);
+                let callCount = 0;
+                let result = await alot
+                    .filterAsync(async x => {
+                        callCount++;
+                        return x > 1;
+                    })
+                    .toArrayAsync();
+                deepEq_(result, [2, 3]);
+                eq_(callCount, arr.length);
+            },
+            async 'sync filter method' () {
+                let result = await Alot
+                    .fromRange(0, 5)
+                    .filterAsync(x => x !== 2)
+                    .toArrayAsync();
+
+                deepEq_(result, [0, 1, 3, 4]);
+            },
+            async 'filter after async map many' () {
+                let result = await new Alot([ 7, 7 ])
+                    .mapManyAsync(async x => {
+                        return [1, 2];
+                    })
+                    .filterAsync(x => x !== 1)
+                    .toArrayAsync();
+
+                deepEq_(result, [2, 2]);
+            },
+        });
     },
     async 'filterAsync and take firstAsync' () {
 
@@ -74,9 +96,22 @@ UTest({
                     .firstAsync();
             })
             .toArrayAsync();
-
-
         deepEq_(deepEls, [ [1], [1], [1] ]);
+
+
+        let deepNullEls = await new Alot([ 7, 7 ])
+            .mapManyAsync(async x => {
+
+                let arr = Alot.fromRange(0, x).toArray();
+                return new Alot(arr)
+                    .mapAsync(async x => x % 2 === 0 ? null : Promise.resolve(x))
+                    .filterAsync(x => x != null)
+                    .toArrayAsync();
+            })
+            .filterAsync(x => x !== 1)
+            .toArrayAsync();
+
+        deepEq_(deepNullEls, [3, 5, 3, 5]);
     },
     'filter and take first: ensure is lazy' () {
         let arr = [

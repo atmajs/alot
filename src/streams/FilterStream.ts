@@ -38,7 +38,7 @@ export class FilterStreamAsync<T> extends AlotProto<T> {
         let i = ++this._index;
 
         while (true) {
-            let result = await this.stream.next();
+            let result = await this.stream.nextAsync();
             if (result.done === true) {
                 return result;
             }
