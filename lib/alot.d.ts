@@ -24,9 +24,11 @@ declare module 'alot/alot' {
         array: T[];
         meta?: AlotMeta;
         constructor(array: T[], meta?: AlotMeta);
-        static fromObject(obj: any): Alot<{
+        static fromObject<TValue>(obj: {
+            [key: string]: TValue;
+        }): Alot<{
             key: string;
-            value: any;
+            value: TValue;
         }>;
         static fromRange(start: number, endExcluded: number): Alot<any>;
     }

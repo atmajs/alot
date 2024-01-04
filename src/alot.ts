@@ -10,7 +10,7 @@ export class Alot<T = any> extends AlotProto<T> {
         super(new ArrayStream(array));
     }
 
-    static fromObject (obj: any): Alot<{key: string, value: any}> {
+    static fromObject <TValue> (obj: { [key: string]: TValue }): Alot<{ key: string, value: TValue }> {
         let arr = Object.keys(obj).map(key => {
             return { key, value: obj[key] };
         });
