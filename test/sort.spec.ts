@@ -74,4 +74,63 @@ UTest({
         let sortedDesc = alot.sortByLocalCompare(x => x.name, 'desc').toArray();
         deepEq_(sortedDesc.map(x => x.name), ['qux', 'foo', 'bar', 'baa']);
     },
+    'sortBy with thenBy' () {
+        let arr = [
+            { name: 'f', num: 2 },
+            { name: 'd', num: 4 },
+            { name: 'q', num: 2, },
+            { name: 'b', num: 3 },
+            { name: 'a', num: 2 },
+        ];
+
+        '> asc -> no thenBy'
+        let alot = new Alot(arr);
+        let sortedAsc = alot
+            .sortBy(x => x.num)
+            .toArray();
+
+        deepEq_(sortedAsc.map(x => x.num), [2, 2, 2, 3, 4]);
+        deepEq_(sortedAsc.map(x => x.name), ['f', 'q', 'a', 'b', 'd']);
+
+        `> asc -> asc`
+        alot = new Alot(arr);
+        sortedAsc = alot
+            .sortBy(x => x.num)
+            .thenBy(x => x.name)
+            .toArray();
+
+        deepEq_(sortedAsc.map(x => x.num), [2, 2, 2, 3, 4]);
+        deepEq_(sortedAsc.map(x => x.name), ['a', 'f', 'q', 'b', 'd']);
+
+
+        `> asc -> desc`
+        alot = new Alot(arr);
+        sortedAsc = alot
+            .sortBy(x => x.num)
+            .thenBy(x => x.name, 'desc')
+            .toArray();
+
+        deepEq_(sortedAsc.map(x => x.num), [2, 2, 2, 3, 4]);
+        deepEq_(sortedAsc.map(x => x.name), ['q', 'f', 'a', 'b', 'd']);
+
+        `> desc -> asc`
+        alot = new Alot(arr);
+        sortedAsc = alot
+            .sortBy(x => x.num, 'desc')
+            .thenBy(x => x.name)
+            .toArray();
+
+        deepEq_(sortedAsc.map(x => x.num), [4, 3, 2, 2, 2]);
+        deepEq_(sortedAsc.map(x => x.name), ['d', 'b', 'a', 'f', 'q']);
+
+        `> desc -> desc`
+        alot = new Alot(arr);
+        sortedAsc = alot
+            .sortBy(x => x.num, 'desc')
+            .thenBy(x => x.name, 'desc')
+            .toArray();
+
+        deepEq_(sortedAsc.map(x => x.num), [4, 3, 2, 2, 2]);
+        deepEq_(sortedAsc.map(x => x.name), ['d', 'b', 'q', 'f', 'a']);
+    },
 })

@@ -406,6 +406,7 @@ declare module 'alot/streams/SortedStream' {
         isAsync: boolean;
         constructor(stream: IAlotStream<T>, mix: SortMethod<T> | keyof T | string, direction?: 'asc' | 'desc', isAsync?: boolean);
         next(): any;
+        thenBy(mix: SortMethod<T> | keyof T | string, direction?: 'asc' | 'desc'): this;
         nextAsync(): Promise<any>;
         reset(): this;
     }

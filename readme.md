@@ -170,6 +170,14 @@ sortBy <T> (property: string, direction: 'asc' | 'desc' = 'asc'): IAlotStream<T>
 // also nested path are supported 'user.foo.username'
 ```
 
+### `thenBy`
+
+`thenBy()` specifies a secondary sort method that is used to further sort data that has already been sorted with a call to `sortBy()`
+
+```ts
+alot(arr).sortBy(x => x.age).thenBy(x => x.name).toArray()
+```
+
 # Output Data
 
 ### `toArray`
