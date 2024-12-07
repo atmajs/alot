@@ -63,6 +63,18 @@ mapAsync <T, TResult> (fn: (x: T, i?: number) => PromiseLike<TResult[]>): IAlotS
 ```
 
 
+### `mapFull`, `mapFullAsync`
+
+Transform the complete stream
+
+```ts
+mapFull <T, TResult> (fn: (arr: T[]) => TResult): IAlotStream<TResult>
+```
+
+```ts
+mapFullAsync <T, TResult> (fn: (arr: T[]) => PromiseLike<TResult[]>): PromiseLike<TResult>
+```
+
 ### `filter`, `filterAsync`
 
 ```ts

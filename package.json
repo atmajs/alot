@@ -5,7 +5,7 @@
         "name": "Alex Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.3.11",
+    "version": "0.3.12",
     "main": "./lib/umd/alot.js",
     "types": "./lib/alot.d.ts",
     "exports": {

@@ -90,6 +90,8 @@ declare module 'alot/AlotProto' {
             mapAsync<TResult>(fn: MethodMap<T, TResult>, meta?: AlotMeta): MapStream<T, TResult>;
             mapMany<TResult>(fn: MethodMapMany<T, TResult>): MapManyStream<T, TResult>;
             mapManyAsync<TResult>(fn: MethodMapMany<T, TResult>): MapManyStream<T, TResult>;
+            mapFull<TResult>(fn: (arr: T[]) => TResult): TResult;
+            mapFullAsync<TResult>(fn: (arr: T[]) => Promise<TResult>, opts?: AlotMetaAsync): Promise<TResult>;
             forEach(fn: ForEachMethod<T>): ForEachStream<T>;
             forEachAsync<TResult>(fn: ForEachMethod<T>): ForEachStream<T>;
             take(count: number): TakeStream<T>;

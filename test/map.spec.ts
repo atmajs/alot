@@ -37,5 +37,34 @@ UTest({
         deepEq_(names.get('foo'), arr[0].name);
         deepEq_(names.get('bar'), arr[1].name);
         deepEq_(names.get('qux'), arr[2].name);
-    }
+    },
+    async 'mapFull' () {
+        let arr = [
+            {id: 'foo', name: 'f'},
+            {id: 'bar', name: 'b'},
+            {id: 'qux', name: 'q'},
+        ];
+        let alot = new Alot(arr);
+        let result = alot.mapFull(arr => {
+            return {
+                ids: arr.map(x => x.id).join('-'),
+            }
+        });
+        eq_(result.ids, 'foo-bar-qux');
+    },
+    async 'mapFullAsync' () {
+        let arr = [
+            {id: 'foo', name: 'f'},
+            {id: 'bar', name: 'b'},
+            {id: 'qux', name: 'q'},
+        ];
+        let alot = new Alot(arr);
+        let result = await alot.mapFullAsync(async arr => {
+            return await Promise.resolve({
+                i: arr.map(x => x.id).join(':'),
+            })
+        });
+        eq_(result.i, 'foo:bar:qux');
+    },
+
 })

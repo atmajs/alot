@@ -93,6 +93,14 @@ export class AlotProto<T, TSource = T> implements IAlotStream<T> {
     mapManyAsync<TResult>(fn: MethodMapMany<T, TResult>) {
         return new MapManyStream(this, fn, { async: true });
     }
+    mapFull<TResult>(fn: (arr: T[]) => TResult) {
+        let arr = this.toArray();
+        return fn(arr);
+    }
+    async mapFullAsync<TResult>(fn: (arr: T[]) => Promise<TResult>, opts?: AlotMetaAsync) {
+        let arr = await this.toArrayAsync(opts);
+        return await fn(arr);
+    }
     forEach(fn: ForEachMethod<T>) {
         return new ForEachStream(this, fn);
     }
