@@ -5,13 +5,14 @@
         "name": "Alex Kit",
         "email": "alex.kit@atmajs.com"
     },
-    "version": "0.3.12",
+    "version": "0.3.13",
     "main": "./lib/umd/alot.js",
     "types": "./lib/alot.d.ts",
     "exports": {
         ".": {
             "import": "./lib/esm/alot.mjs",
-            "require": "./lib/umd/alot.js"
+            "require": "./lib/umd/alot.js",
+            "types": "./lib/alot.d.ts"
         }
     },
     "repository": {
