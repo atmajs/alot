@@ -112,7 +112,7 @@ export class JoinStream<TOuter, TInner = TOuter, TResult = TOuter> extends AlotP
 
 
 // export interface MethodMapMany<T, TResult> {
-//     (x: T, i?: number): TResult[] | PromiseLike<TResult[]>
+//     (x: T, i: number): TResult[] | PromiseLike<TResult[]>
 // }
 // export class MapManyStream<T, TResult> extends AlotProto<TResult, T> {
 //     private _index = -1;

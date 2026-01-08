@@ -6,7 +6,7 @@ import { r_DONE } from '../utils/r';
 import { Deco } from '../utils/deco';
 
 
-export type SortMethod<T> = (x: T, i?: number) => string | number | bigint | { valueOf (): number | string };
+export type SortMethod<T> = (x: T, i: number) => string | number | bigint | { valueOf (): number | string };
 
 export class SortByStream<T> extends AlotProto<T> {
     isAsync = false;
@@ -64,7 +64,7 @@ export class SortByLocalCompareStream<T> extends AlotProto<T> {
 
     constructor(
         public stream: IAlotStream<T>,
-        public getValue: (x:T, i?: number) => string,
+        public getValue: (x:T, i: number) => string,
         public direction: 'asc' | 'desc' = 'asc',
         public params: ParametersFromSecond<String['localeCompare']>
     ) {

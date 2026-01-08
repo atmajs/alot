@@ -147,7 +147,24 @@ UTest({
             .mapAsync(async x => x * 2)
             .toArrayAsync();
 
-            deepEq_(result, [2,4,6,8]);
+        deepEq_(result, [2,4,6,8]);
+
+        async function timeout () {
+            return new Promise(resolve => {
+                setTimeout(resolve, 50)
+            });
+        }
+
+        alot = new Alot(arr);
+        let i = 0;
+        await alot
+            .groupBy(x => `${x}`)
+            .mapAsync(async x => {
+                await timeout();
+                i++;
+            })
+            .toArrayAsync({threads: 3});
+        eq_(i, arr.length);
     },
     'mapMany' () {
         let arr = [ [1, 2], [3, 4]];

@@ -2,7 +2,7 @@ import { IAlotStream } from "./IAlotStream";
 import { AlotProto } from "../AlotProto";
 
 
-export type GroupByKeyFn<T, TKey = string> = (x: T, i?: number) => TKey
+export type GroupByKeyFn<T, TKey = string> = (x: T, i: number) => TKey
 interface IGroup<T, TKey = string> {
     key: TKey
     values: T[]

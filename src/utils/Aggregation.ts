@@ -5,7 +5,7 @@ export type TAggregateNumeric = number | { valueOf: () => number } | bigint;
 export namespace Aggregation {
     function getMinMaxByEntryInner<T, TOut> (
         stream: IAlotStream<T>
-        , getFn: (x: T, i?: number) => TOut
+        , getFn: (x: T, i: number) => TOut
         , compare: 'min' | 'max'
     ): { value: TOut, entry: T } {
         let outVal:TOut = null;
@@ -42,7 +42,7 @@ export namespace Aggregation {
     }
     async function getMinMaxByEntryInnerAsync<T, TOut> (
         stream: IAlotStream<T>
-        , getFn: (x: T, i?: number) => TOut | Promise<TOut>
+        , getFn: (x: T, i: number) => TOut | Promise<TOut>
         , compare: 'min' | 'max'
     ): Promise<{ value: TOut, entry: T }> {
         let outVal:TOut = null;
@@ -77,7 +77,7 @@ export namespace Aggregation {
 
     export function getMinMaxValueBy<T, TOut> (
         stream: IAlotStream<T>
-        , getFn: (x: T, i?: number) => TOut
+        , getFn: (x: T, i: number) => TOut
         , compare: 'min' | 'max'
     ) {
         if (stream.isAsync) {
@@ -88,7 +88,7 @@ export namespace Aggregation {
     }
     export async function getMinMaxValueByAsync<T, TOut> (
         stream: IAlotStream<T>
-        , getFn: (x: T, i?: number) => TOut | Promise<TOut>
+        , getFn: (x: T, i: number) => TOut | Promise<TOut>
         , compare: 'min' | 'max'
     ) {
         let x = await getMinMaxByEntryInner(stream, getFn, compare);
@@ -97,7 +97,7 @@ export namespace Aggregation {
 
     export function getMinMaxItemBy<T, TOut> (
         stream: IAlotStream<T>
-        , getFn: (x: T, i?: number) => TOut
+        , getFn: (x: T, i: number) => TOut
         , compare: 'min' | 'max'
     ) {
         if (stream.isAsync) {
@@ -108,16 +108,16 @@ export namespace Aggregation {
     }
     export async function getMinMaxItemByAsync<T, TOut> (
         stream: IAlotStream<T>
-        , getFn: (x: T, i?: number) => TOut | Promise<TOut>
+        , getFn: (x: T, i: number) => TOut | Promise<TOut>
         , compare: 'min' | 'max'
     ) {
         let x = await getMinMaxByEntryInner(stream, getFn, compare);
         return x.entry;
     }
 
-    export function sum <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => number, startVal: number): number
-    export function sum <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => bigint, startVal: bigint): bigint
-    export function sum <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => any, startVal: any): any {
+    export function sum <T> (stream: IAlotStream<T>, fn: (x: T, i: number) => number, startVal: number): number
+    export function sum <T> (stream: IAlotStream<T>, fn: (x: T, i: number) => bigint, startVal: bigint): bigint
+    export function sum <T> (stream: IAlotStream<T>, fn: (x: T, i: number) => any, startVal: any): any {
         stream.reset();
         if (stream.isAsync) {
             return sumAsync(stream, fn, startVal) as any;
@@ -137,9 +137,9 @@ export namespace Aggregation {
         }
         return sum;
     }
-    export async function sumAsync <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => number | Promise<number>, startVal: number): Promise<number>
-    export async function sumAsync <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => bigint | Promise<bigint>, startVal: bigint): Promise<bigint>
-    export async function sumAsync <T> (stream: IAlotStream<T>, fn: (x: T, i?: number) => any | Promise<any>, startVal: any): Promise<any> {
+    export async function sumAsync <T> (stream: IAlotStream<T>, fn: (x: T, i: number) => number | Promise<number>, startVal: number): Promise<number>
+    export async function sumAsync <T> (stream: IAlotStream<T>, fn: (x: T, i: number) => bigint | Promise<bigint>, startVal: bigint): Promise<bigint>
+    export async function sumAsync <T> (stream: IAlotStream<T>, fn: (x: T, i: number) => any | Promise<any>, startVal: any): Promise<any> {
         stream.reset();
         let sum = startVal;
         let i = 0;
