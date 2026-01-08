@@ -112,7 +112,7 @@ declare module 'alot/AlotProto' {
             sortBy(sortByKey: keyof T | string, direction?: 'asc' | 'desc'): SortByStream<T>;
             sortByAsync(sortByFn: SortMethod<T>, direction?: 'asc' | 'desc'): SortByStream<T>;
             sortByAsync(sortByKey: keyof T | string, direction?: 'asc' | 'desc'): SortByStream<T>;
-            sortByLocalCompare(getValFn: (x: T, i?: number) => string, direction?: 'asc' | 'desc', ...params: ParametersFromSecond<String['localeCompare']>): SortByLocalCompareStream<T>;
+            sortByLocalCompare(getValFn: (x: T, i: number) => string, direction?: 'asc' | 'desc', ...params: ParametersFromSecond<String['localeCompare']>): SortByLocalCompareStream<T>;
             fork(fn: (stream: this) => void | any): this;
             toDictionary<TKey = string, TValue = any>(keyFn: (x: T) => TKey, valFn?: (x: T) => TValue): {
                     [key: string]: TValue;
@@ -124,23 +124,23 @@ declare module 'alot/AlotProto' {
             toMapAsync<TKey = string, TValue = any>(keyFn: (x: T) => Promise<TKey> | TKey, valFn?: (x: T) => Promise<TValue> | TValue): Promise<Map<TKey, TValue>>;
             toArray(): T[];
             toArrayAsync(meta?: AlotMetaAsync): PromiseLike<T[]>;
-            first(matcher?: (x: T, i?: number) => boolean): T;
-            firstAsync(matcher?: (x: T, i?: number) => (boolean | Promise<boolean>)): Promise<T>;
-            find(matcher?: (x: T, i?: number) => boolean): T;
-            findAsync(matcher?: (x: T, i?: number) => (boolean | Promise<boolean>)): Promise<T>;
-            sum(getVal: (x: T, i?: number) => number, initialValue?: number): number;
-            sum(getVal: (x: T, i?: number) => bigint, initialValue: bigint): bigint;
-            sumAsync(getVal: (x: T, i?: number) => number | Promise<number>, initialValue?: number): Promise<number>;
-            sumBigInt(getVal: (x: T, i?: number) => bigint): bigint;
-            sumBigIntAsync(getVal: (x: T, i?: number) => bigint | Promise<bigint>, initialValue?: bigint): Promise<bigint>;
-            max<TOut extends TAggregateNumeric>(fn: (x: T, i?: number) => TOut): TOut;
-            maxAsync<TOut extends TAggregateNumeric>(fn: (x: T, i?: number) => TOut): Promise<TOut>;
-            maxItem<TOut extends TAggregateNumeric>(fn: (x: T, i?: number) => TOut): T;
-            maxItemAsync<TOut extends TAggregateNumeric>(fn: (x: T, i?: number) => TOut): Promise<T>;
-            min<TOut extends TAggregateNumeric>(fn: (x: T, i?: number) => TOut): TOut;
-            minAsync<TOut extends TAggregateNumeric>(fn: (x: T, i?: number) => TOut): Promise<TOut>;
-            minItem<TOut extends TAggregateNumeric>(fn: (x: T, i?: number) => TOut): T;
-            minItemAsync<TOut extends TAggregateNumeric>(fn: (x: T, i?: number) => TOut): Promise<T>;
+            first(matcher?: (x: T, i: number) => boolean): T;
+            firstAsync(matcher?: (x: T, i: number) => (boolean | Promise<boolean>)): Promise<T>;
+            find(matcher?: (x: T, i: number) => boolean): T;
+            findAsync(matcher?: (x: T, i: number) => (boolean | Promise<boolean>)): Promise<T>;
+            sum(getVal: (x: T, i: number) => number, initialValue?: number): number;
+            sum(getVal: (x: T, i: number) => bigint, initialValue: bigint): bigint;
+            sumAsync(getVal: (x: T, i: number) => number | Promise<number>, initialValue?: number): Promise<number>;
+            sumBigInt(getVal: (x: T, i: number) => bigint): bigint;
+            sumBigIntAsync(getVal: (x: T, i: number) => bigint | Promise<bigint>, initialValue?: bigint): Promise<bigint>;
+            max<TOut extends TAggregateNumeric>(fn: (x: T, i: number) => TOut): TOut;
+            maxAsync<TOut extends TAggregateNumeric>(fn: (x: T, i: number) => TOut): Promise<TOut>;
+            maxItem<TOut extends TAggregateNumeric>(fn: (x: T, i: number) => TOut): T;
+            maxItemAsync<TOut extends TAggregateNumeric>(fn: (x: T, i: number) => TOut): Promise<T>;
+            min<TOut extends TAggregateNumeric>(fn: (x: T, i: number) => TOut): TOut;
+            minAsync<TOut extends TAggregateNumeric>(fn: (x: T, i: number) => TOut): Promise<TOut>;
+            minItem<TOut extends TAggregateNumeric>(fn: (x: T, i: number) => TOut): T;
+            minItemAsync<TOut extends TAggregateNumeric>(fn: (x: T, i: number) => TOut): Promise<T>;
     }
 }
 
@@ -159,7 +159,7 @@ declare module 'alot/streams/IAlotStream' {
 }
 
 declare module 'alot/Methods' {
-    export type MethodFilter<T> = (x: T, i?: number) => boolean | Promise<boolean>;
+    export type MethodFilter<T> = (x: T, i: number) => boolean | Promise<boolean>;
 }
 
 declare module 'alot/utils/Aggregation' {
@@ -168,14 +168,14 @@ declare module 'alot/utils/Aggregation' {
         valueOf: () => number;
     } | bigint;
     export namespace Aggregation {
-        function getMinMaxValueBy<T, TOut>(stream: IAlotStream<T>, getFn: (x: T, i?: number) => TOut, compare: 'min' | 'max'): any;
-        function getMinMaxValueByAsync<T, TOut>(stream: IAlotStream<T>, getFn: (x: T, i?: number) => TOut | Promise<TOut>, compare: 'min' | 'max'): Promise<TOut>;
-        function getMinMaxItemBy<T, TOut>(stream: IAlotStream<T>, getFn: (x: T, i?: number) => TOut, compare: 'min' | 'max'): any;
-        function getMinMaxItemByAsync<T, TOut>(stream: IAlotStream<T>, getFn: (x: T, i?: number) => TOut | Promise<TOut>, compare: 'min' | 'max'): Promise<T>;
-        function sum<T>(stream: IAlotStream<T>, fn: (x: T, i?: number) => number, startVal: number): number;
-        function sum<T>(stream: IAlotStream<T>, fn: (x: T, i?: number) => bigint, startVal: bigint): bigint;
-        function sumAsync<T>(stream: IAlotStream<T>, fn: (x: T, i?: number) => number | Promise<number>, startVal: number): Promise<number>;
-        function sumAsync<T>(stream: IAlotStream<T>, fn: (x: T, i?: number) => bigint | Promise<bigint>, startVal: bigint): Promise<bigint>;
+        function getMinMaxValueBy<T, TOut>(stream: IAlotStream<T>, getFn: (x: T, i: number) => TOut, compare: 'min' | 'max'): any;
+        function getMinMaxValueByAsync<T, TOut>(stream: IAlotStream<T>, getFn: (x: T, i: number) => TOut | Promise<TOut>, compare: 'min' | 'max'): Promise<TOut>;
+        function getMinMaxItemBy<T, TOut>(stream: IAlotStream<T>, getFn: (x: T, i: number) => TOut, compare: 'min' | 'max'): any;
+        function getMinMaxItemByAsync<T, TOut>(stream: IAlotStream<T>, getFn: (x: T, i: number) => TOut | Promise<TOut>, compare: 'min' | 'max'): Promise<T>;
+        function sum<T>(stream: IAlotStream<T>, fn: (x: T, i: number) => number, startVal: number): number;
+        function sum<T>(stream: IAlotStream<T>, fn: (x: T, i: number) => bigint, startVal: bigint): bigint;
+        function sumAsync<T>(stream: IAlotStream<T>, fn: (x: T, i: number) => number | Promise<number>, startVal: number): Promise<number>;
+        function sumAsync<T>(stream: IAlotStream<T>, fn: (x: T, i: number) => bigint | Promise<bigint>, startVal: bigint): Promise<bigint>;
     }
 }
 
@@ -212,8 +212,8 @@ declare module 'alot/streams/TakeStream' {
     export interface TTakeWhileMethodOpts {
             includeLast?: boolean;
     }
-    export type TakeWhileMethod<T> = (x: T, i?: number) => boolean;
-    export type TakeWhileMethodAsync<T> = (x: T, i?: number) => boolean | Promise<boolean>;
+    export type TakeWhileMethod<T> = (x: T, i: number) => boolean;
+    export type TakeWhileMethodAsync<T> = (x: T, i: number) => boolean | Promise<boolean>;
     export class TakeWhileStream<T> extends AlotProto<T> {
             stream: IAlotStream<T>;
             fn: TakeWhileMethod<T>;
@@ -252,7 +252,7 @@ declare module 'alot/streams/SkipStream' {
     }
     export interface TSkipWhileMethodOpts {
     }
-    export type SkipWhileMethod<T> = (x: T, i?: number) => boolean;
+    export type SkipWhileMethod<T> = (x: T, i: number) => boolean;
     export class SkipWhileStream<T> extends AlotProto<T> {
             stream: IAlotStream<T>;
             fn: SkipWhileMethod<T>;
@@ -261,7 +261,7 @@ declare module 'alot/streams/SkipStream' {
             next(): AlotStreamIterationResult<T>;
             reset(): this;
     }
-    export type SkipWhileMethodAsync<T> = (x: T, i?: number) => boolean | Promise<boolean>;
+    export type SkipWhileMethodAsync<T> = (x: T, i: number) => boolean | Promise<boolean>;
     export class SkipWhileStreamAsync<T> extends AlotProto<T> {
             stream: IAlotStream<T>;
             fn: SkipWhileMethodAsync<T>;
@@ -298,7 +298,7 @@ declare module 'alot/streams/MapStream' {
     import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
     import { AlotStreamOpts } from 'alot/AlotMeta';
-    export type MethodMap<T, TResult> = (x: T, i?: number) => TResult | PromiseLike<TResult>;
+    export type MethodMap<T, TResult> = (x: T, i: number) => TResult | PromiseLike<TResult>;
     export class MapStream<TSource, TResult> extends AlotProto<TResult, TSource> {
         stream: IAlotStream<TSource>;
         fn: MethodMap<TSource, TResult>;
@@ -307,7 +307,7 @@ declare module 'alot/streams/MapStream' {
         nextAsync(): Promise<any>;
         reset(): this;
     }
-    export type MethodMapMany<T, TResult> = (x: T, i?: number) => TResult[] | PromiseLike<TResult[]>;
+    export type MethodMapMany<T, TResult> = (x: T, i: number) => TResult[] | PromiseLike<TResult[]>;
     export class MapManyStream<T, TResult> extends AlotProto<TResult, T> {
         stream: IAlotStream<T>;
         fn: MethodMapMany<T, TResult>;
@@ -322,7 +322,7 @@ declare module 'alot/streams/MapStream' {
 declare module 'alot/streams/GroupStream' {
     import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
-    export type GroupByKeyFn<T, TKey = string> = (x: T, i?: number) => TKey;
+    export type GroupByKeyFn<T, TKey = string> = (x: T, i: number) => TKey;
     interface IGroup<T, TKey = string> {
         key: TKey;
         values: T[];
@@ -342,7 +342,7 @@ declare module 'alot/streams/DistinctStream' {
     import { AlotStreamIterationResult } from 'alot/streams/IAlotStream'; 
      import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
-    export type DistinctByKeyFn<T, TKey = string | number> = (x: T, i?: number) => TKey;
+    export type DistinctByKeyFn<T, TKey = string | number> = (x: T, i: number) => TKey;
     export class DistinctByStream<T, TKey = string | number> extends AlotProto<T> {
             stream: IAlotStream<T>;
             fn: DistinctByKeyFn<T, TKey>;
@@ -356,7 +356,7 @@ declare module 'alot/streams/ForEachStream' {
     import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
     import { AlotStreamOpts } from 'alot/AlotMeta';
-    export type ForEachMethod<T> = (x: T, i?: number) => void | any | never;
+    export type ForEachMethod<T> = (x: T, i: number) => void | any | never;
     export class ForEachStream<T> extends AlotProto<T> {
         stream: IAlotStream<T>;
         fn: ForEachMethod<T>;
@@ -399,7 +399,7 @@ declare module 'alot/streams/SortedStream' {
     import { IAlotStream } from "alot/streams/IAlotStream";
     import { AlotProto } from "alot/AlotProto";
     import { ParametersFromSecond } from 'alot/utils/types';
-    export type SortMethod<T> = (x: T, i?: number) => string | number | bigint | {
+    export type SortMethod<T> = (x: T, i: number) => string | number | bigint | {
         valueOf(): number | string;
     };
     export class SortByStream<T> extends AlotProto<T> {
@@ -414,11 +414,11 @@ declare module 'alot/streams/SortedStream' {
     }
     export class SortByLocalCompareStream<T> extends AlotProto<T> {
         stream: IAlotStream<T>;
-        getValue: (x: T, i?: number) => string;
+        getValue: (x: T, i: number) => string;
         direction: 'asc' | 'desc';
         params: ParametersFromSecond<String['localeCompare']>;
         isAsync: boolean;
-        constructor(stream: IAlotStream<T>, getValue: (x: T, i?: number) => string, direction: 'asc' | 'desc', params: ParametersFromSecond<String['localeCompare']>);
+        constructor(stream: IAlotStream<T>, getValue: (x: T, i: number) => string, direction: 'asc' | 'desc', params: ParametersFromSecond<String['localeCompare']>);
         next(): any;
         reset(): this;
     }
